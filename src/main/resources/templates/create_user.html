@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Front page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../public/css/styles.css"
+          th:href="@{/css/styles.css}">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="../public/js/script.js"
+            th:src="@{/js/script.js}"
+            defer></script>
+</head>
+
+<body>
+
+<section class="form-box">
+
+    <h1>Opret bruger</h1>
+
+    <form method="post" action="/create-user" class="carport-form">
+
+        <h2>Loginoplysninger</h2>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" th:value="${email}" required>
+
+        <label for="password">Adgangskode</label>
+        <input type="password" id="password" name="password" autocomplete="new-password" required>
+
+
+        <h2>Kontaktoplysninger</h2>
+
+        <label for="name">Navn</label>
+        <input type="text" id="name" name="name" th:value="${name}" required>
+
+        <label for="address">Adresse</label>
+        <input type="text" id="address" name="address" th:value="${address}" required>
+
+        <label for="zipCode">Postnummer</label>
+        <input type="text" id="zipCode" name="zipCode" th:value="${zipCode}" maxlength="4" required>
+
+        <label for="phone">Telefon</label>
+        <input type="text" id="phone" name="phone" th:value="${phone}" maxlength="8" required>
+
+        <input type="hidden" name="role" value="customer">
+
+        <button type="submit">Opret bruger</button>
+
+    </form>
+</section>
+
+<script th:inline="javascript">
+    const errorField = /*[[${errorField}]]*/ null;
+    const errorMessage = /*[[${errorMessage}]]*/ null;
+
+    if (errorField && errorMessage) {
+        const field = document.getElementById(errorField);
+
+        if (field) {
+            field.setCustomValidity(errorMessage);
+            field.reportValidity();
+
+            field.addEventListener("input", () => {
+                field.setCustomValidity("");
+            });
+        }
+    }
+</script>
+
+</body>
+
+
+</html>

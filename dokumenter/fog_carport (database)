@@ -1,0 +1,1648 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict Q72k2TAjnL2gELbhUzstWjglrAn0U2EnzJKqf3awPpYnZF5ZyupG2GDw2gzmbtn
+
+-- Dumped from database version 16.2 (Debian 16.2-1.pgdg120+2)
+-- Dumped by pg_dump version 16.11
+
+-- Started on 2026-05-19 09:07:16 CEST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 223 (class 1259 OID 90296)
+-- Name: bill_of_material; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bill_of_material (
+    bom_id integer NOT NULL,
+    offer_id integer NOT NULL
+);
+
+
+ALTER TABLE public.bill_of_material OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 90295)
+-- Name: bill_of_material_bom_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.bill_of_material_bom_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.bill_of_material_bom_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3486 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: bill_of_material_bom_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.bill_of_material_bom_id_seq OWNED BY public.bill_of_material.bom_id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 90317)
+-- Name: bom_line; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.bom_line (
+    bom_line_id integer NOT NULL,
+    bom_id integer NOT NULL,
+    quantity integer NOT NULL,
+    material_id integer NOT NULL,
+    usage character varying NOT NULL,
+    CONSTRAINT chk_bom_line_quantity_positive CHECK ((quantity > 0))
+);
+
+
+ALTER TABLE public.bom_line OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 90316)
+-- Name: bom_line_line_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.bom_line_line_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.bom_line_line_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3487 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: bom_line_line_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.bom_line_line_id_seq OWNED BY public.bom_line.bom_line_id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 90255)
+-- Name: carport_request; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.carport_request (
+    request_id integer NOT NULL,
+    user_id integer,
+    length integer NOT NULL,
+    width integer NOT NULL
+);
+
+
+ALTER TABLE public.carport_request OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 90254)
+-- Name: carport_request_request_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.carport_request_request_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.carport_request_request_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3488 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: carport_request_request_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.carport_request_request_id_seq OWNED BY public.carport_request.request_id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 90334)
+-- Name: customer_order; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customer_order (
+    order_id integer NOT NULL,
+    offer_id integer NOT NULL,
+    user_id integer NOT NULL,
+    order_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.customer_order OWNER TO postgres;
+
+--
+-- TOC entry 228 (class 1259 OID 90333)
+-- Name: customer_order_order_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.customer_order_order_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.customer_order_order_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3489 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: customer_order_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.customer_order_order_id_seq OWNED BY public.customer_order.order_id;
+
+
+--
+-- TOC entry 231 (class 1259 OID 106497)
+-- Name: length_set; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.length_set (
+    length_set_id integer NOT NULL,
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public.length_set OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1259 OID 106496)
+-- Name: length_set_length_set_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.length_set_length_set_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.length_set_length_set_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3490 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: length_set_length_set_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.length_set_length_set_id_seq OWNED BY public.length_set.length_set_id;
+
+
+--
+-- TOC entry 233 (class 1259 OID 106506)
+-- Name: length_set_value; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.length_set_value (
+    length_set_value_id integer NOT NULL,
+    length_set_id integer NOT NULL,
+    length_cm integer NOT NULL,
+    price numeric NOT NULL,
+    CONSTRAINT chk_length_set_value_length_cm_positive CHECK ((length_cm > 0)),
+    CONSTRAINT chk_length_set_value_price_not_negative CHECK ((price >= (0)::numeric))
+);
+
+
+ALTER TABLE public.length_set_value OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1259 OID 106505)
+-- Name: length_set_value_length_set_value_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.length_set_value_length_set_value_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.length_set_value_length_set_value_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3491 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: length_set_value_length_set_value_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.length_set_value_length_set_value_id_seq OWNED BY public.length_set_value.length_set_value_id;
+
+
+--
+-- TOC entry 235 (class 1259 OID 106546)
+-- Name: material_item; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.material_item (
+    material_item_id integer NOT NULL,
+    material_type_id integer NOT NULL,
+    length_set_value_id integer NOT NULL
+);
+
+
+ALTER TABLE public.material_item OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 90310)
+-- Name: material_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.material_type (
+    material_type_id integer NOT NULL,
+    name character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.material_type OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 90309)
+-- Name: material_material_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.material_material_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.material_material_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3492 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: material_material_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.material_material_id_seq OWNED BY public.material_type.material_type_id;
+
+
+--
+-- TOC entry 234 (class 1259 OID 106545)
+-- Name: material_material_id_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.material_material_id_seq1
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.material_material_id_seq1 OWNER TO postgres;
+
+--
+-- TOC entry 3493 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: material_material_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.material_material_id_seq1 OWNED BY public.material_item.material_item_id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 90282)
+-- Name: offer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.offer (
+    offer_id integer NOT NULL,
+    request_id integer NOT NULL,
+    total_price numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE public.offer OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 90281)
+-- Name: offer_offer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.offer_offer_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.offer_offer_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3494 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: offer_offer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.offer_offer_id_seq OWNED BY public.offer.offer_id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 90239)
+-- Name: user_account; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_account (
+    user_id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    password character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    phone character varying(30) NOT NULL,
+    address character varying(255) NOT NULL,
+    zip_code integer NOT NULL,
+    role character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.user_account OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 90238)
+-- Name: user_account_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_account_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.user_account_user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3495 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: user_account_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.user_account_user_id_seq OWNED BY public.user_account.user_id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 90233)
+-- Name: zip_code; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.zip_code (
+    zip_code integer NOT NULL,
+    city character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.zip_code OWNER TO postgres;
+
+--
+-- TOC entry 3255 (class 2604 OID 90299)
+-- Name: bill_of_material bom_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bill_of_material ALTER COLUMN bom_id SET DEFAULT nextval('public.bill_of_material_bom_id_seq'::regclass);
+
+
+--
+-- TOC entry 3257 (class 2604 OID 90320)
+-- Name: bom_line bom_line_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bom_line ALTER COLUMN bom_line_id SET DEFAULT nextval('public.bom_line_line_id_seq'::regclass);
+
+
+--
+-- TOC entry 3253 (class 2604 OID 90258)
+-- Name: carport_request request_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.carport_request ALTER COLUMN request_id SET DEFAULT nextval('public.carport_request_request_id_seq'::regclass);
+
+
+--
+-- TOC entry 3258 (class 2604 OID 90337)
+-- Name: customer_order order_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer_order ALTER COLUMN order_id SET DEFAULT nextval('public.customer_order_order_id_seq'::regclass);
+
+
+--
+-- TOC entry 3260 (class 2604 OID 106500)
+-- Name: length_set length_set_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set ALTER COLUMN length_set_id SET DEFAULT nextval('public.length_set_length_set_id_seq'::regclass);
+
+
+--
+-- TOC entry 3261 (class 2604 OID 106509)
+-- Name: length_set_value length_set_value_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set_value ALTER COLUMN length_set_value_id SET DEFAULT nextval('public.length_set_value_length_set_value_id_seq'::regclass);
+
+
+--
+-- TOC entry 3262 (class 2604 OID 106549)
+-- Name: material_item material_item_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_item ALTER COLUMN material_item_id SET DEFAULT nextval('public.material_material_id_seq1'::regclass);
+
+
+--
+-- TOC entry 3256 (class 2604 OID 90313)
+-- Name: material_type material_type_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_type ALTER COLUMN material_type_id SET DEFAULT nextval('public.material_material_id_seq'::regclass);
+
+
+--
+-- TOC entry 3254 (class 2604 OID 90285)
+-- Name: offer offer_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.offer ALTER COLUMN offer_id SET DEFAULT nextval('public.offer_offer_id_seq'::regclass);
+
+
+--
+-- TOC entry 3252 (class 2604 OID 90242)
+-- Name: user_account user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_account ALTER COLUMN user_id SET DEFAULT nextval('public.user_account_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 3468 (class 0 OID 90296)
+-- Dependencies: 223
+-- Data for Name: bill_of_material; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bill_of_material (bom_id, offer_id) FROM stdin;
+1	11
+2	12
+3	13
+\.
+
+
+--
+-- TOC entry 3472 (class 0 OID 90317)
+-- Dependencies: 227
+-- Data for Name: bom_line; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.bom_line (bom_line_id, bom_id, quantity, material_id, usage) FROM stdin;
+1	1	9	8	Konstruktion
+2	2	7	12	Konstruktion
+3	2	2	3	Konstruktion
+4	3	9	8	Konstruktion
+5	3	2	7	Konstruktion
+6	3	6	15	Konstruktion
+\.
+
+
+--
+-- TOC entry 3464 (class 0 OID 90255)
+-- Dependencies: 219
+-- Data for Name: carport_request; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.carport_request (request_id, user_id, length, width) FROM stdin;
+1	1	600	300
+2	2	600	300
+3	1	545	555
+4	1	555	555
+5	1	444	444
+6	1	333	335
+7	1	1123	13
+8	1	355	355
+9	1	344	344
+10	1	666	555
+11	1	444	444
+12	1	355	544
+13	1	450	450
+\.
+
+
+--
+-- TOC entry 3474 (class 0 OID 90334)
+-- Dependencies: 229
+-- Data for Name: customer_order; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customer_order (order_id, offer_id, user_id, order_date) FROM stdin;
+1	13	1	2026-05-18 18:19:25.488939
+3	12	1	2026-05-18 18:21:02.266063
+4	11	1	2026-05-18 18:24:17.608105
+\.
+
+
+--
+-- TOC entry 3476 (class 0 OID 106497)
+-- Dependencies: 231
+-- Data for Name: length_set; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.length_set (length_set_id, name) FROM stdin;
+1	Stolpe længde
+2	Rem/spær længder
+\.
+
+
+--
+-- TOC entry 3478 (class 0 OID 106506)
+-- Dependencies: 233
+-- Data for Name: length_set_value; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.length_set_value (length_set_value_id, length_set_id, length_cm, price) FROM stdin;
+15	2	300	158.85
+16	2	360	190.61
+17	2	420	222.39
+18	2	480	254.15
+19	2	540	285.93
+20	2	600	479.70
+21	2	660	527.66
+22	1	300	221.85
+23	2	720	575.64
+\.
+
+
+--
+-- TOC entry 3480 (class 0 OID 106546)
+-- Dependencies: 235
+-- Data for Name: material_item; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.material_item (material_item_id, material_type_id, length_set_value_id) FROM stdin;
+1	11	15
+2	10	15
+3	11	16
+4	10	16
+5	11	17
+6	10	17
+7	11	18
+8	10	18
+9	11	19
+10	10	19
+11	11	20
+12	10	20
+13	11	21
+14	10	21
+15	12	22
+\.
+
+
+--
+-- TOC entry 3470 (class 0 OID 90310)
+-- Dependencies: 225
+-- Data for Name: material_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.material_type (material_type_id, name) FROM stdin;
+12	Stolpe 97x97 mm
+10	Spærtræ 45x195 mm
+11	Rem 45x195 mm
+\.
+
+
+--
+-- TOC entry 3466 (class 0 OID 90282)
+-- Dependencies: 221
+-- Data for Name: offer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.offer (offer_id, request_id, total_price) FROM stdin;
+2	2	10000.00
+8	8	10000.00
+9	9	10000.00
+10	10	10000.00
+11	11	2287.00
+12	12	3739.00
+13	13	4127.00
+\.
+
+
+--
+-- TOC entry 3462 (class 0 OID 90239)
+-- Dependencies: 217
+-- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_account (user_id, name, password, email, phone, address, zip_code, role) FROM stdin;
+1	Anders Bjerrum	1212	anders.bjerrum86@gmail.com	21482661	Blommehaven 8	3700	customer
+2	Anders Bjerrum	1212	anders.bjerrum87@gmail.com	21482661	Blommehaven 8	3700	customer
+\.
+
+
+--
+-- TOC entry 3460 (class 0 OID 90233)
+-- Dependencies: 215
+-- Data for Name: zip_code; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.zip_code (zip_code, city) FROM stdin;
+3700	Rønne
+2100	København Ø
+8000	Aarhus C
+1301	København K
+2000	Frederiksberg
+2200	København N
+2300	København S
+2400	København NV
+2450	København SV
+2500	Valby
+2600	Glostrup
+2605	Brøndby
+2610	Rødovre
+2625	Vallensbæk
+2630	Taastrup
+2635	Ishøj
+2640	Hedehusene
+2650	Hvidovre
+2660	Brøndby Strand
+2665	Vallensbæk Strand
+2670	Greve
+2680	Solrød Strand
+2690	Karlslunde
+2700	Brønshøj
+2720	Vanløse
+2730	Herlev
+2740	Skovlunde
+2750	Ballerup
+2760	Måløv
+2765	Smørum
+2770	Kastrup
+2791	Dragør
+2800	Kongens Lyngby
+2820	Gentofte
+2830	Virum
+2840	Holte
+2850	Nærum
+2860	Søborg
+2880	Bagsværd
+2900	Hellerup
+2920	Charlottenlund
+2930	Klampenborg
+2942	Skodsborg
+2950	Vedbæk
+2960	Rungsted Kyst
+2970	Hørsholm
+2980	Kokkedal
+2990	Nivå
+3000	Helsingør
+3050	Humlebæk
+3060	Espergærde
+3070	Snekkersten
+3080	Tikøb
+3100	Hornbæk
+3120	Dronningmølle
+3140	Ålsgårde
+3150	Hellebæk
+3200	Helsinge
+3210	Vejby
+3220	Tisvildeleje
+3230	Græsted
+3250	Gilleleje
+3300	Frederiksværk
+3310	Ølsted
+3320	Skævinge
+3330	Gørløse
+3360	Liseleje
+3370	Melby
+3390	Hundested
+3400	Hillerød
+3460	Birkerød
+3480	Fredensborg
+3490	Kvistgård
+3500	Værløse
+3520	Farum
+3540	Lynge
+3550	Slangerup
+3600	Frederikssund
+3630	Jægerspris
+3650	Ølstykke
+3660	Stenløse
+3670	Veksø Sjælland
+3720	Aakirkeby
+3730	Nexø
+3740	Svaneke
+3751	Østermarie
+3760	Gudhjem
+3770	Allinge
+3782	Klemensker
+3790	Hasle
+4000	Roskilde
+4040	Jyllinge
+4050	Skibby
+4060	Kirke Såby
+4070	Kirke Hyllinge
+4100	Ringsted
+4130	Viby Sjælland
+4140	Borup
+4160	Herlufmagle
+4171	Glumsø
+4173	Fjenneslev
+4174	Jystrup
+4180	Sorø
+4190	Munke Bjergby
+4200	Slagelse
+4220	Korsør
+4230	Skælskør
+4241	Vemmelev
+4242	Boeslunde
+4243	Rude
+4250	Fuglebjerg
+4261	Dalmose
+4262	Sandved
+4270	Høng
+4281	Gørlev
+4291	Ruds Vedby
+4293	Dianalund
+4295	Stenlille
+4296	Nyrup
+4300	Holbæk
+4320	Lejre
+4330	Hvalsø
+4340	Tølløse
+4350	Ugerløse
+4360	Kirke Eskilstrup
+4370	Store Merløse
+4390	Vipperød
+4400	Kalundborg
+4420	Regstrup
+4440	Mørkøv
+4450	Jyderup
+4460	Snertinge
+4470	Svebølle
+4480	Store Fuglede
+4490	Jerslev
+4500	Nykøbing Sj
+4520	Svinninge
+4532	Gislinge
+4534	Hørve
+4540	Fårevejle
+4550	Asnæs
+4560	Vig
+4571	Grevinge
+4572	Nørre Asmindrup
+4573	Højby
+4581	Rørvig
+4583	Sjællands Odde
+4591	Føllenslev
+4592	Sejerø
+4593	Eskebjerg
+4600	Køge
+4621	Gadstrup
+4622	Havdrup
+4623	Lille Skensved
+4632	Bjæverskov
+4640	Fakse
+4652	Hårlev
+4653	Karise
+4654	Fakse Ladeplads
+4660	Store Heddinge
+4671	Strøby
+4672	Klippinge
+4673	Rødvig Stevns
+4681	Herfølge
+4682	Tureby
+4683	Rønnede
+4684	Holme-Olstrup
+4690	Haslev
+4700	Næstved
+4720	Præstø
+4733	Tappernøje
+4735	Mern
+4736	Karrebæksminde
+4750	Lundby
+4760	Vordingborg
+4771	Kalvehave
+4772	Langebæk
+4773	Stensved
+4780	Stege
+4791	Borre
+4792	Askeby
+4793	Bogø By
+4800	Nykøbing F
+4840	Nørre Alslev
+4850	Stubbekøbing
+4862	Guldborg
+4863	Eskilstrup
+4871	Horbelev
+4872	Idestrup
+4873	Væggerløse
+4874	Gedser
+4880	Nysted
+4891	Toreby L
+4892	Kettinge
+4894	Øster Ulslev
+4895	Errindlev
+4900	Nakskov
+4912	Harpelunde
+4913	Horslunde
+4920	Søllested
+4930	Maribo
+4941	Bandholm
+4943	Torrig L
+4944	Fejø
+4951	Nørreballe
+4952	Stokkemarke
+4953	Vesterborg
+4960	Holeby
+4970	Rødby
+4983	Dannemare
+4990	Sakskøbing
+5000	Odense C
+5200	Odense V
+5210	Odense NV
+5220	Odense SØ
+5230	Odense M
+5240	Odense NØ
+5250	Odense SV
+5260	Odense S
+5270	Odense N
+5290	Marslev
+5300	Kerteminde
+5330	Munkebo
+5350	Rynkeby
+5370	Mesinge
+5380	Dalby
+5390	Martofte
+5400	Bogense
+5450	Otterup
+5462	Morud
+5463	Harndrup
+5464	Brenderup
+5466	Asperup
+5471	Søndersø
+5474	Veflinge
+5485	Skamby
+5491	Blommenslyst
+5492	Vissenbjerg
+5500	Middelfart
+5540	Ullerslev
+5550	Langeskov
+5560	Aarup
+5580	Nørre Aaby
+5591	Gelsted
+5592	Ejby
+5600	Faaborg
+5610	Assens
+5620	Glamsbjerg
+5631	Ebberup
+5642	Millinge
+5672	Broby
+5683	Haarby
+5690	Tommerup
+5700	Svendborg
+5750	Ringe
+5762	Vester Skerninge
+5771	Stenstrup
+5772	Kværndrup
+5792	Årslev
+5800	Nyborg
+5853	Ørbæk
+5854	Gislev
+5856	Ryslinge
+5863	Ferritslev Fyn
+5871	Frørup
+5874	Hesselager
+5881	Skårup Fyn
+5882	Vejstrup
+5883	Oure
+5884	Gudme
+5892	Gudbjerg
+5900	Rudkøbing
+5932	Humble
+5935	Bagenkop
+5953	Tranekær
+5960	Marstal
+5970	Ærøskøbing
+5985	Søby Ærø
+6000	Kolding
+6040	Egtved
+6051	Almind
+6052	Viuf
+6064	Jordrup
+6070	Christiansfeld
+6091	Bjert
+6092	Sønder Stenderup
+6093	Sjølund
+6094	Hejls
+6100	Haderslev
+6200	Aabenraa
+6230	Rødekro
+6240	Løgumkloster
+6261	Bredebro
+6270	Tønder
+6280	Højer
+6300	Gråsten
+6310	Broager
+6320	Egernsund
+6330	Padborg
+6340	Kruså
+6360	Tinglev
+6372	Bylderup-Bov
+6392	Bolderslev
+6400	Sønderborg
+6430	Nordborg
+6440	Augustenborg
+6470	Sydals
+6500	Vojens
+6510	Gram
+6520	Toftlund
+6535	Branderup J
+6541	Bevtoft
+6560	Sommersted
+6580	Vamdrup
+6600	Vejen
+6621	Gesten
+6622	Bække
+6623	Vorbasse
+6630	Rødding
+6640	Lunderskov
+6650	Brørup
+6660	Lintrup
+6670	Holsted
+6682	Hovborg
+6683	Føvling
+6690	Gørding
+6700	Esbjerg
+6701	Esbjerg
+6705	Esbjerg Ø
+6710	Esbjerg V
+6715	Esbjerg N
+6720	Fanø
+6731	Tjæreborg
+6740	Bramming
+6752	Glejbjerg
+6760	Ribe
+6771	Gredstedbro
+6780	Skærbæk
+6792	Rømø
+6800	Varde
+6818	Årre
+6823	Ansager
+6830	Nørre Nebel
+6840	Oksbøl
+6851	Janderup
+6852	Billum
+6853	Vejers Strand
+6854	Henne
+6855	Outrup
+6857	Blåvand
+6862	Tistrup
+6870	Ølgod
+6880	Tarm
+6893	Hemmet
+6900	Skjern
+6920	Videbæk
+6933	Kibæk
+6940	Lem St
+6950	Ringkøbing
+6960	Hvide Sande
+6971	Spjald
+6973	Ørnhøj
+6980	Tim
+6990	Ulfborg
+7000	Fredericia
+7080	Børkop
+7100	Vejle
+7120	Vejle Øst
+7130	Juelsminde
+7140	Stouby
+7150	Barrit
+7160	Tørring
+7171	Uldum
+7173	Vonge
+7182	Bredsten
+7183	Randbøl
+7184	Vandel
+7190	Billund
+7200	Grindsted
+7250	Hejnsvig
+7260	Sønder Omme
+7270	Stakroge
+7280	Sønder Felding
+7300	Jelling
+7321	Gadbjerg
+7323	Give
+7330	Brande
+7361	Ejstrupholm
+7362	Hampen
+7400	Herning
+7430	Ikast
+7441	Bording
+7442	Engesvang
+7451	Sunds
+7470	Karup J
+7480	Vildbjerg
+7490	Aulum
+7500	Holstebro
+7540	Haderup
+7550	Sørvad
+7560	Hjerm
+7570	Vemb
+7600	Struer
+7620	Lemvig
+7650	Bøvlingbjerg
+7660	Bækmarksbro
+7673	Harboøre
+7680	Thyborøn
+7700	Thisted
+7730	Hanstholm
+7741	Frøstrup
+7742	Vesløs
+7752	Snedsted
+7755	Bedsted Thy
+7760	Hurup Thy
+7770	Vestervig
+7790	Thyholm
+7800	Skive
+7830	Vinderup
+7840	Højslev
+7850	Stoholm, Jylland
+7860	Spøttrup
+7870	Roslev
+7884	Fur
+7900	Nykøbing M
+7950	Erslev
+7960	Karby
+7970	Redsted M
+7980	Vils
+7990	Øster Assels
+8200	Århus N
+8210	Århus V
+8220	Brabrand
+8230	Åbyhøj
+8240	Risskov
+8250	Egå
+8260	Viby J
+8270	Højbjerg
+8300	Odder
+8305	Samsø
+8310	Tranbjerg J
+8320	Mårslet
+8330	Beder
+8340	Malling
+8350	Hundslund
+8355	Solbjerg
+8361	Hasselager
+8362	Hørning
+8370	Hadsten
+8380	Trige
+8381	Tilst
+8382	Hinnerup
+8400	Ebeltoft
+8410	Rønde
+8420	Knebel
+8444	Balle
+8450	Hammel
+8462	Harlev J
+8464	Galten
+8471	Sabro
+8472	Sporup
+8500	Grenaa
+8520	Lystrup
+8530	Hjortshøj
+8541	Skødstrup
+8543	Hornslet
+8544	Mørke
+8550	Ryomgård
+8560	Kolind
+8570	Trustrup
+8581	Nimtofte
+8585	Glesborg
+8586	Ørum Djurs
+8592	Anholt
+8600	Silkeborg
+8620	Kjellerup
+8632	Lemming
+8641	Sorring
+8643	Ans by
+8653	Them
+8654	Bryrup
+8660	Skanderborg
+8670	Låsby
+8680	Ry
+8700	Horsens
+8721	Daugård
+8722	Hedensted
+8723	Løsning
+8732	Hovedgård
+8740	Brædstrup
+8751	Gedved
+8752	Østbirk
+8762	Flemming
+8763	Rask Mølle
+8765	Klovborg
+8766	Nørre Snede
+8781	Stenderup
+8783	Hornsyld
+8800	Viborg
+8830	Tjele
+8831	Løgstrup
+8832	Skals
+8840	Rødkærsbro
+8850	Bjerringbro
+8860	Ulstrup
+8870	Langå
+8881	Thorsø
+8882	Fårvang
+8883	Gjern
+8900	Randers
+8950	Ørsted
+8961	Allingåbro
+8963	Auning
+8970	Havndal
+8981	Spenstrup
+8983	Gjerlev J
+8990	Fårup
+9000	Aalborg
+9200	Aalborg SV
+9210	Aalborg SØ
+9220	Aalborg Øst
+9230	Svenstrup J
+9240	Nibe
+9260	Gistrup
+9270	Klarup
+9280	Storvorde
+9293	Kongerslev
+9300	Sæby
+9310	Vodskov
+9320	Hjallerup
+9330	Dronninglund
+9340	Asaa
+9352	Dybvad
+9362	Gandrup
+9370	Hals
+9380	Vestbjerg
+9381	Sulsted
+9382	Tylstrup
+9400	Nørresundby
+9430	Vadum
+9440	Aabybro
+9460	Brovst
+9480	Løkken
+9490	Pandrup
+9492	Blokhus
+9493	Saltum
+9500	Hobro
+9510	Arden
+9520	Skørping
+9530	Støvring
+9541	Suldrup
+9550	Mariager
+9560	Hadsund
+9574	Bælum
+9575	Terndrup
+9600	Aars
+9610	Nørager
+9620	Aalestrup
+9631	Gedsted
+9632	Møldrup
+9640	Farsø
+9670	Løgstør
+9681	Ranum
+9690	Fjerritslev
+9700	Brønderslev
+9740	Jerslev J
+9750	Øster Vrå
+9760	Vrå
+9800	Hjørring
+9830	Tårs
+9850	Hirtshals
+9870	Sindal
+9881	Bindslev
+9900	Frederikshavn
+9940	Læsø
+9970	Strandby
+9981	Jerup
+9982	Ålbæk
+9990	Skagen
+\.
+
+
+--
+-- TOC entry 3496 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: bill_of_material_bom_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.bill_of_material_bom_id_seq', 3, true);
+
+
+--
+-- TOC entry 3497 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: bom_line_line_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.bom_line_line_id_seq', 6, true);
+
+
+--
+-- TOC entry 3498 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: carport_request_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.carport_request_request_id_seq', 13, true);
+
+
+--
+-- TOC entry 3499 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: customer_order_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customer_order_order_id_seq', 4, true);
+
+
+--
+-- TOC entry 3500 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: length_set_length_set_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.length_set_length_set_id_seq', 4, true);
+
+
+--
+-- TOC entry 3501 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: length_set_value_length_set_value_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.length_set_value_length_set_value_id_seq', 23, true);
+
+
+--
+-- TOC entry 3502 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: material_material_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.material_material_id_seq', 12, true);
+
+
+--
+-- TOC entry 3503 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: material_material_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.material_material_id_seq1', 15, true);
+
+
+--
+-- TOC entry 3504 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: offer_offer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.offer_offer_id_seq', 13, true);
+
+
+--
+-- TOC entry 3505 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: user_account_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_account_user_id_seq', 2, true);
+
+
+--
+-- TOC entry 3279 (class 2606 OID 90303)
+-- Name: bill_of_material bill_of_material_offer_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bill_of_material
+    ADD CONSTRAINT bill_of_material_offer_id_key UNIQUE (offer_id);
+
+
+--
+-- TOC entry 3281 (class 2606 OID 90301)
+-- Name: bill_of_material bill_of_material_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bill_of_material
+    ADD CONSTRAINT bill_of_material_pkey PRIMARY KEY (bom_id);
+
+
+--
+-- TOC entry 3287 (class 2606 OID 90322)
+-- Name: bom_line bom_line_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bom_line
+    ADD CONSTRAINT bom_line_pkey PRIMARY KEY (bom_line_id);
+
+
+--
+-- TOC entry 3273 (class 2606 OID 90261)
+-- Name: carport_request carport_request_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.carport_request
+    ADD CONSTRAINT carport_request_pkey PRIMARY KEY (request_id);
+
+
+--
+-- TOC entry 3291 (class 2606 OID 90342)
+-- Name: customer_order customer_order_offer_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer_order
+    ADD CONSTRAINT customer_order_offer_id_key UNIQUE (offer_id);
+
+
+--
+-- TOC entry 3293 (class 2606 OID 90340)
+-- Name: customer_order customer_order_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer_order
+    ADD CONSTRAINT customer_order_pkey PRIMARY KEY (order_id);
+
+
+--
+-- TOC entry 3295 (class 2606 OID 106504)
+-- Name: length_set length_set_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set
+    ADD CONSTRAINT length_set_pkey PRIMARY KEY (length_set_id);
+
+
+--
+-- TOC entry 3299 (class 2606 OID 106511)
+-- Name: length_set_value length_set_value_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set_value
+    ADD CONSTRAINT length_set_value_pkey PRIMARY KEY (length_set_value_id);
+
+
+--
+-- TOC entry 3303 (class 2606 OID 106551)
+-- Name: material_item material_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_item
+    ADD CONSTRAINT material_pkey PRIMARY KEY (material_item_id);
+
+
+--
+-- TOC entry 3283 (class 2606 OID 90315)
+-- Name: material_type material_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_type
+    ADD CONSTRAINT material_type_pkey PRIMARY KEY (material_type_id);
+
+
+--
+-- TOC entry 3275 (class 2606 OID 90287)
+-- Name: offer offer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.offer
+    ADD CONSTRAINT offer_pkey PRIMARY KEY (offer_id);
+
+
+--
+-- TOC entry 3277 (class 2606 OID 90289)
+-- Name: offer offer_request_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.offer
+    ADD CONSTRAINT offer_request_id_key UNIQUE (request_id);
+
+
+--
+-- TOC entry 3301 (class 2606 OID 106535)
+-- Name: length_set_value unique_length_per_set; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set_value
+    ADD CONSTRAINT unique_length_per_set UNIQUE (length_set_id, length_cm);
+
+
+--
+-- TOC entry 3297 (class 2606 OID 106537)
+-- Name: length_set unique_length_set_name; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set
+    ADD CONSTRAINT unique_length_set_name UNIQUE (name);
+
+
+--
+-- TOC entry 3305 (class 2606 OID 106553)
+-- Name: material_item unique_material_combination; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_item
+    ADD CONSTRAINT unique_material_combination UNIQUE (material_type_id, length_set_value_id);
+
+
+--
+-- TOC entry 3285 (class 2606 OID 106539)
+-- Name: material_type unique_material_type_name; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_type
+    ADD CONSTRAINT unique_material_type_name UNIQUE (name);
+
+
+--
+-- TOC entry 3289 (class 2606 OID 114691)
+-- Name: bom_line uq_bom_line_bom_id_material_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bom_line
+    ADD CONSTRAINT uq_bom_line_bom_id_material_id UNIQUE (bom_id, material_id);
+
+
+--
+-- TOC entry 3269 (class 2606 OID 90248)
+-- Name: user_account user_account_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_account
+    ADD CONSTRAINT user_account_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 3271 (class 2606 OID 90246)
+-- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_account
+    ADD CONSTRAINT user_account_pkey PRIMARY KEY (user_id);
+
+
+--
+-- TOC entry 3267 (class 2606 OID 90237)
+-- Name: zip_code zip_code_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zip_code
+    ADD CONSTRAINT zip_code_pkey PRIMARY KEY (zip_code);
+
+
+--
+-- TOC entry 3310 (class 2606 OID 90328)
+-- Name: bom_line fk_bom_line_bom; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bom_line
+    ADD CONSTRAINT fk_bom_line_bom FOREIGN KEY (bom_id) REFERENCES public.bill_of_material(bom_id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3311 (class 2606 OID 106564)
+-- Name: bom_line fk_bom_line_material; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bom_line
+    ADD CONSTRAINT fk_bom_line_material FOREIGN KEY (material_id) REFERENCES public.material_item(material_item_id);
+
+
+--
+-- TOC entry 3309 (class 2606 OID 90304)
+-- Name: bill_of_material fk_bom_offer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bill_of_material
+    ADD CONSTRAINT fk_bom_offer FOREIGN KEY (offer_id) REFERENCES public.offer(offer_id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3314 (class 2606 OID 106512)
+-- Name: length_set_value fk_length_set_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.length_set_value
+    ADD CONSTRAINT fk_length_set_id FOREIGN KEY (length_set_id) REFERENCES public.length_set(length_set_id);
+
+
+--
+-- TOC entry 3315 (class 2606 OID 106559)
+-- Name: material_item fk_material_length_set_value; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_item
+    ADD CONSTRAINT fk_material_length_set_value FOREIGN KEY (length_set_value_id) REFERENCES public.length_set_value(length_set_value_id);
+
+
+--
+-- TOC entry 3316 (class 2606 OID 106554)
+-- Name: material_item fk_material_material_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_item
+    ADD CONSTRAINT fk_material_material_type FOREIGN KEY (material_type_id) REFERENCES public.material_type(material_type_id);
+
+
+--
+-- TOC entry 3308 (class 2606 OID 90290)
+-- Name: offer fk_offer_request; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.offer
+    ADD CONSTRAINT fk_offer_request FOREIGN KEY (request_id) REFERENCES public.carport_request(request_id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3312 (class 2606 OID 90343)
+-- Name: customer_order fk_order_offer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer_order
+    ADD CONSTRAINT fk_order_offer FOREIGN KEY (offer_id) REFERENCES public.offer(offer_id);
+
+
+--
+-- TOC entry 3313 (class 2606 OID 90348)
+-- Name: customer_order fk_order_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer_order
+    ADD CONSTRAINT fk_order_user FOREIGN KEY (user_id) REFERENCES public.user_account(user_id);
+
+
+--
+-- TOC entry 3307 (class 2606 OID 90262)
+-- Name: carport_request fk_request_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.carport_request
+    ADD CONSTRAINT fk_request_user FOREIGN KEY (user_id) REFERENCES public.user_account(user_id);
+
+
+--
+-- TOC entry 3306 (class 2606 OID 90249)
+-- Name: user_account fk_user_zip_code; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_account
+    ADD CONSTRAINT fk_user_zip_code FOREIGN KEY (zip_code) REFERENCES public.zip_code(zip_code);
+
+
+-- Completed on 2026-05-19 09:07:16 CEST
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict Q72k2TAjnL2gELbhUzstWjglrAn0U2EnzJKqf3awPpYnZF5ZyupG2GDw2gzmbtn
+

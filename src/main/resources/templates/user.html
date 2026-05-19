@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Front page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../public/css/styles.css"
+          th:href="@{/css/styles.css}">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="../public/js/script.js"
+            th:src="@{/js/script.js}"
+            defer></script>
+</head>
+
+<body>
+
+<a href="/" class="logout-btn logout-top-right">Log af</a>
+
+<section class="user-page">
+
+    <h1>Min side (<span th:text="${email}"></span>)</h1>
+
+    <section class="user-offer-form">
+        <h2>Generer tilbud</h2>
+
+        <p th:if="${error}" th:text="${error}" class="error-message"></p>
+
+        <form method="post" action="/user/create-offer" class="carport-form">
+
+            <label for="length">Længde i cm</label>
+            <input type="text"
+                   id="length"
+                   name="length"
+                   inputmode="numeric"
+                   placeholder="240-720 cm"
+                   required
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+            <label for="width">Bredde i cm</label>
+            <input type="text"
+                   id="width"
+                   name="width"
+                   inputmode="numeric"
+                   placeholder="240-600 cm"
+                   required
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+            <button type="submit">Generer</button>
+
+        </form>
+    </section>
+
+    <div class="user-columns">
+
+        <section class="user-column">
+            <h2>Dine tilbud</h2>
+
+            <div class="offer-line" th:each="offer : ${offers}">
+                <span>
+                    Carport:
+                    <span th:text="${offer.length}"></span> cm L,
+                    <span th:text="${offer.width}"></span> cm B,
+                    <span th:text="${offer.price}"></span> kr.
+                </span>
+
+                <form method="post" action="/reject-offer">
+                    <input type="hidden" name="offerId" th:value="${offer.offerId}">
+                    <button type="submit" class="reject-btn">Afvis</button>
+                </form>
+
+                <form method="post" action="/accept-offer">
+                    <input type="hidden" name="offerId" th:value="${offer.offerId}">
+                    <button type="submit" class="accept-btn">Acceptér</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="user-column">
+            <h2>Dine ordrer</h2>
+
+            <div class="offer-line" th:each="order : ${orders}">
+        <span>
+            Ordrenr. <span th:text="${order.orderId}"></span>:
+            Carport:
+            <span th:text="${order.length}"></span> cm L,
+            <span th:text="${order.width}"></span> cm B,
+            <span th:text="${order.price}"></span> kr.
+        </span>
+
+                <form method="post" action="/order/bom" target="bomPopup"
+                  onsubmit="
+                  const w = 800;
+                  const h = 600;
+                  const left = (screen.width - w) / 2;
+                  const top = (screen.height - h) / 2;
+                  window.open('', 'bomPopup',
+                  `width=${w},height=${h},left=${left},top=${top}`);">
+                    <input type="hidden" name="offerId" th:value="${order.offerId}">
+                    <button type="submit" class="accept-btn">Vis stykliste</button>
+                </form>
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+</section>
+
+</body>
+</html>

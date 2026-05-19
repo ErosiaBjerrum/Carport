@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Front page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../public/css/styles.css"
+          th:href="@{/css/styles.css}">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="../public/js/script.js"
+            th:src="@{/js/script.js}"
+            defer></script>
+</head>
+
+<body>
+
+<section class="form-box">
+    <h1>Stykliste</h1>
+
+    <table>
+        <tr>
+            <th>Materiale</th>
+            <th>Længde</th>
+            <th>Antal</th>
+            <th>Enhedspris</th>
+            <th>Linjepris</th>
+        </tr>
+
+        <tr th:each="line : ${bomLines}">
+            <td th:text="${line.materialItem.name}"></td>
+            <td><span th:text="${line.materialItem.length}"></span> cm</td>
+            <td><span th:text="${line.quantity}"></span> stk.</td>
+            <td><span th:text="${line.unitPrice}"></span> kr.</td>
+            <td><span th:text="${line.linePrice}"></span> kr.</td>
+        </tr>
+    </table>
+
+    <button type="button" onclick="window.close()" class="logout-btn">Luk</button>
+</section>
+
+</body>
+
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Front page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../public/css/styles.css"
+          th:href="@{/css/styles.css}">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="../public/js/script.js"
+            th:src="@{/js/script.js}"
+            defer></script>
+</head>
+
+<body>
+
+<section class="form-box">
+    <h1>Login</h1>
+
+    <form method="post" action="/login" class="carport-form">
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Adgangskode</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Log ind</button>
+
+    </form>
+</section>
+
+</body>
+</html>

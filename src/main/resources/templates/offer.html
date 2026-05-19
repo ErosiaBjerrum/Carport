@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Front page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../public/css/styles.css"
+          th:href="@{/css/styles.css}">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="../public/js/script.js"
+            th:src="@{/js/script.js}"
+            defer></script>
+</head>
+<body>
+
+<section class="form-box">
+    <h1>Tilbud på carport</h1>
+
+    <p>Carport med målene:</p>
+
+    <p>
+        L: <span th:text="${length}"></span> cm
+        B: <span th:text="${width}"></span> cm
+    </p>
+
+    <p>
+        Pris: <span th:text="${price}"></span> kr.
+    </p>
+
+    <p>For at bestille en carport skal du være logget på.</p>
+
+    <div class="offer-buttons">
+        <a href="/login">Log på</a>
+        <a href="/create-user">Opret bruger</a>
+    </div>
+
+</section>
+
+
+
+</body>
+</html>

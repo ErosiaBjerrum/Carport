@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Front page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../public/css/styles.css"
+          th:href="@{/css/styles.css}">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="../public/js/script.js"
+            th:src="@{/js/script.js}"
+            defer></script>
+</head>
+<body>
+
+    <nav class="top-buttons">
+        <a href="/login">Log på</a>
+        <a href="/create-user">Opret bruger</a>
+    </nav>
+
+    <section class="form-box">
+        <h1>FOG CARPORTE<br>konfigurer din skræddersyede carport</h1>
+
+        <p th:if="${error}" th:text="${error}" class="error-message"></p>
+        <form method="post" action="/offer" class="carport-form">
+
+            <label for="length">Længde i cm</label>
+            <input type="text"
+                   id="length"
+                   name="length"
+                   inputmode="numeric"
+                   placeholder="240-720 cm"
+                   required
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+            <label for="width">Bredde i cm</label>
+            <input type="text"
+                   id="width"
+                   name="width"
+                   inputmode="numeric"
+                   placeholder="240-600 cm"
+                   required
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+            <button type="submit">Se tilbud</button>
+
+        </form>
+
+   </section>
+
+
+</body>
+</html>
