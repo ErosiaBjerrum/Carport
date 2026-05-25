@@ -2,16 +2,14 @@ package app;
 
 import app.config.ThymeleafConfig;
 import app.controllers.UserController;
-import app.entities.BOMLine;
-import app.entities.BillOfMaterial;
-import app.entities.Offer;
-import app.entities.Order;
+import app.entities.*;
 import app.persistence.BillOfMaterialMapper;
 import app.persistence.CarportRequestMapper;
 import app.persistence.OfferMapper;
 import app.persistence.UserMapper;
 import app.persistence.OrderMapper;
 import app.services.Calculator;
+import app.services.CarportSvgGenerator;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
@@ -48,7 +46,7 @@ public class Main {
             int lengthInt = Integer.parseInt(length);
             int widthInt = Integer.parseInt(width);
 
-            if (lengthInt < 240 || widthInt < 240 || lengthInt > 720 || widthInt > 600) {
+            if (lengthInt < 240 || widthInt < 240 || lengthInt > 780 || widthInt > 600) {
                 ctx.attribute("error", "De angivne mål er uden for standardrammen.");
                 ctx.render("index.html");
                 return;
@@ -68,6 +66,11 @@ public class Main {
             ctx.attribute("width", width);
             ctx.attribute("price", price);
 
+            CarportSvgGenerator svgGenerator = new CarportSvgGenerator();
+            String svg = svgGenerator.generateSvg(lengthInt, widthInt);
+
+            ctx.attribute("svg", svg);
+
             ctx.render("offer.html");
         });
 
@@ -82,11 +85,15 @@ public class Main {
             String password = ctx.formParam("password");
 
             try {
-                Integer userId = UserMapper.login(email, password);
+                User user = UserMapper.login(email, password);
 
-                if (userId != null) {
+                if (user != null) {
+                    int userId = user.getUserId();
+                    String role = user.getRole();
+
                     ctx.sessionAttribute("userId", userId);
                     ctx.sessionAttribute("email", email);
+                    ctx.sessionAttribute("role", role);
 
                     String length = ctx.sessionAttribute("length");
                     String width = ctx.sessionAttribute("width");
@@ -106,7 +113,11 @@ public class Main {
                         ctx.sessionAttribute("price", null);
                     }
 
-                    ctx.redirect("/user");
+                    if (role.equals("admin")) {
+                        ctx.redirect("/admin");
+                    } else {
+                        ctx.redirect("/user");
+                    }
                 } else {
                     ctx.attribute("error", "Forkert e-mail eller adgangskode.");
                     ctx.render("login.html");
@@ -119,11 +130,19 @@ public class Main {
             }
         });
 
+        app.get("/logout", ctx -> {
+            ctx.req().getSession().invalidate();
+            ctx.redirect("/");
+        });
+
         app.get("/user", ctx -> {
 
             String error = ctx.sessionAttribute("error");
             ctx.attribute("error", error);
             ctx.sessionAttribute("error", null);
+            String successMessage = ctx.sessionAttribute("successMessage");
+            ctx.attribute("successMessage", successMessage);
+            ctx.sessionAttribute("successMessage", null);
 
             Integer userId = ctx.sessionAttribute("userId");
             String email = ctx.sessionAttribute("email");
@@ -140,6 +159,24 @@ public class Main {
                 ctx.attribute("email", email);
                 ctx.attribute("offers", offers);
                 ctx.attribute("orders", orders);
+
+                Integer newOfferId = ctx.sessionAttribute("newOfferId");
+
+                if (newOfferId != null) {
+
+                    Offer newOffer = OfferMapper.getOfferById(newOfferId);
+
+                    CarportSvgGenerator svgGenerator = new CarportSvgGenerator();
+                    String svg = svgGenerator.generateSvg(
+                            newOffer.getLength(),
+                            newOffer.getWidth()
+                    );
+
+                    ctx.attribute("newOffer", newOffer);
+                    ctx.attribute("svg", svg);
+
+                    ctx.sessionAttribute("newOfferId", null);
+                }
 
                 ctx.render("user.html");
 
@@ -171,7 +208,7 @@ public class Main {
             int lengthInt = Integer.parseInt(length);
             int widthInt = Integer.parseInt(width);
 
-            if (lengthInt < 240 || widthInt < 240 || lengthInt > 720 || widthInt > 600) {
+            if (lengthInt < 240 || widthInt < 240 || lengthInt > 780 || widthInt > 600) {
                 ctx.sessionAttribute("error", "De angivne mål er uden for standardrammen.");
                 ctx.redirect("/user");
                 return;
@@ -187,6 +224,7 @@ public class Main {
 
                 int offerId = OfferMapper.createOffer(requestId, price);
                 BillOfMaterialMapper.saveBillOfMaterial(offerId, billOfMaterial);
+                ctx.sessionAttribute("newOfferId", offerId);
 
                 ctx.redirect("/user");
 
@@ -198,15 +236,56 @@ public class Main {
         });
 
         app.post("/reject-offer", ctx -> {
+            Integer userId = ctx.sessionAttribute("userId");
+
+            if (userId == null) {
+                ctx.redirect("/login");
+                return;
+            }
+
             int offerId = Integer.parseInt(ctx.formParam("offerId"));
 
             try {
+                // Sikrer, at en bruger aldrig kan slette en anden brugers tilbud
+                if (!OfferMapper.offerBelongsToUser(offerId, userId)) {
+                    ctx.status(403);
+                    ctx.result("Du har ikke adgang til dette tilbud.");
+                    return;
+                }
+
                 OfferMapper.deleteOfferById(offerId);
                 ctx.redirect("/user");
 
             } catch (SQLException e) {
                 e.printStackTrace();
                 ctx.sessionAttribute("error", "Tilbuddet kunne ikke afvises.");
+                ctx.redirect("/user");
+            }
+        });
+
+        app.post("/show-offer", ctx -> {
+            Integer userId = ctx.sessionAttribute("userId");
+
+            if (userId == null) {
+                ctx.redirect("/login");
+                return;
+            }
+
+            int offerId = Integer.parseInt(ctx.formParam("offerId"));
+
+            try {
+                if (!OfferMapper.offerBelongsToUser(offerId, userId)) {
+                    ctx.status(403);
+                    ctx.result("Du har ikke adgang til dette tilbud.");
+                    return;
+                }
+
+                ctx.sessionAttribute("newOfferId", offerId);
+                ctx.redirect("/user");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                ctx.sessionAttribute("error", "Tilbuddet kunne ikke vises.");
                 ctx.redirect("/user");
             }
         });
@@ -222,7 +301,14 @@ public class Main {
             int offerId = Integer.parseInt(ctx.formParam("offerId"));
 
             try {
+                // Sikrer, at en bruger ikke kan acceptere en anden brugers tilbud
+                if (!OfferMapper.offerBelongsToUser(offerId, userId)) {
+                    ctx.status(403);
+                    ctx.result("Du har ikke adgang til dette tilbud.");
+                    return;
+                }
                 OrderMapper.createOrder(offerId, userId);
+                ctx.sessionAttribute("successMessage", "Tak for din bestilling. Købet er gennemført, og betalingen er registreret.");
                 ctx.redirect("/user");
 
             } catch (SQLException e) {
@@ -235,10 +321,43 @@ public class Main {
         app.post("/order/bom", ctx -> {
             int offerId = Integer.parseInt(ctx.formParam("offerId"));
 
+            // Sikrer, at styklisten kun kan ses af ordrens ejer eller admin
+            Integer userId = ctx.sessionAttribute("userId");
+            String role = ctx.sessionAttribute("role");
+
+            if (userId == null) {
+                ctx.redirect("/login");
+                return;
+            }
+
+            if (!"admin".equals(role) && !OrderMapper.orderBelongsToUser(offerId, userId)) {
+                ctx.status(403);
+                ctx.result("Du har ikke adgang til denne stykliste.");
+                return;
+            }
+
             try {
                 List<BOMLine> bomLines = BillOfMaterialMapper.getBOMLinesByOfferId(offerId);
 
+                Offer offer = OfferMapper.getOfferById(offerId);
+
+                CarportSvgGenerator svgGenerator = new CarportSvgGenerator();
+                String svg = svgGenerator.generateSvg(
+                        offer.getLength(),
+                        offer.getWidth()
+                );
+
+                ctx.attribute("svg", svg);
+
+                double totalPrice = 0;
+
+                for (BOMLine bomLine : bomLines) {
+                    totalPrice += bomLine.getLinePrice();
+                }
+
                 ctx.attribute("bomLines", bomLines);
+                ctx.attribute("totalPrice", totalPrice);
+
                 ctx.render("bom.html");
 
             } catch (SQLException e) {
@@ -247,6 +366,41 @@ public class Main {
                 ctx.redirect("/user");
             }
         });
+
+        //ADMINLOGIN:
+        // admin@fog.dk
+        // admin123
+        app.get("/admin", ctx -> {
+
+            // Følgende if-kode sikrer, at kun admin kan se adminsiden
+            Integer userId = ctx.sessionAttribute("userId");
+            String role = ctx.sessionAttribute("role");
+
+            if (userId == null || role == null || !role.equals("admin")) {
+                ctx.redirect("/login");
+                return;
+            }
+
+            try {
+                List<Order> orders = OrderMapper.getAllOrders();
+                List<Offer> offers = OfferMapper.getAllOffers();
+                List<User> customers = UserMapper.getAllCustomers();
+
+                ctx.attribute("orders", orders);
+                ctx.attribute("offers", offers);
+                ctx.attribute("customers", customers);
+
+                ctx.render("admin.html");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+                ctx.attribute("error", "Ordrer kunne ikke hentes.");
+                ctx.render("admin.html");
+            }
+        });
+
+
 
     }
 

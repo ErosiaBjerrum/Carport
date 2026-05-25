@@ -2,27 +2,148 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Front page</title>
+    <title>Administrationsside</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS -->
     <link rel="stylesheet"
           href="../public/css/styles.css"
           th:href="@{/css/styles.css}">
 
-    <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
           rel="stylesheet">
 
-    <!-- JavaScript -->
     <script src="../public/js/script.js"
             th:src="@{/js/script.js}"
             defer></script>
 </head>
 
-
 <body>
+
+<header>
+    <h1>Administrationsside</h1>
+    <p>Overblik over kunder, tilbud og ordrer</p>
+
+    <nav>
+        <a href="/logout">Log af</a>
+    </nav>
+</header>
+
+<main class="admin-container">
+
+    <section class="admin-section">
+        <details open>
+            <summary class="admin-summary">Alle ordrer</summary>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Ordrenr.</th>
+                    <th>Dato</th>
+                    <th>Kunde</th>
+                    <th>Mål</th>
+                    <th>Pris</th>
+                    <th>Stykliste</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${#temporals.format(order.orderDateFormatted, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${order.customerName}"></td>
+
+                    <td>
+                        <span th:text="${order.length}"></span> x
+                        <span th:text="${order.width}"></span>
+                    </td>
+
+                    <td><span th:text="${order.price}"></span> kr.</td>
+
+                    <td>
+                        <form method="post" action="/order/bom" target="bomFrame"
+                              onsubmit="document.getElementById('bomDialog').showModal()">
+                            <input type="hidden" name="offerId" th:value="${order.offerId}">
+                            <button type="submit">Vis stykliste</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </details>
+    </section>
+
+    <section class="admin-section">
+        <details>
+            <summary class="admin-summary">Alle tilbud</summary>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Tilbudsnr.</th>
+                    <th>Dato</th>
+                    <th>Kunde</th>
+                    <th>Mål</th>
+                    <th>Pris</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="offer : ${offers}">
+                    <td th:text="${offer.offerId}"></td>
+                    <td th:text="${#temporals.format(offer.offerDateFormatted, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${offer.customerName}"></td>
+
+                    <td>
+                        <span th:text="${offer.length}"></span> x
+                        <span th:text="${offer.width}"></span>
+                    </td>
+
+                    <td><span th:text="${offer.price}"></span> kr.</td>
+                </tr>
+                </tbody>
+            </table>
+        </details>
+    </section>
+
+    <section class="admin-section">
+        <details>
+            <summary class="admin-summary">Alle kunder</summary>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Kundenr.</th>
+                    <th>Navn</th>
+                    <th>E-mail</th>
+                    <th>Telefon</th>
+                    <th>Adresse</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="customer : ${customers}">
+                    <td th:text="${customer.userId}"></td>
+                    <td th:text="${customer.name}"></td>
+                    <td th:text="${customer.email}"></td>
+                    <td th:text="${customer.phone}"></td>
+
+                    <td>
+                        <span th:text="${customer.address}"></span>,
+                        <span th:text="${customer.zipCode}"></span>
+                        <span th:text="${customer.city}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </details>
+    </section>
+
+</main>
+
+<dialog id="bomDialog" class="bom-dialog">
+    <iframe name="bomFrame" class="bom-frame"></iframe>
+</dialog>
 
 </body>
 </html>

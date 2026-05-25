@@ -21,10 +21,12 @@
             defer></script>
 </head>
 
-<body>
+<body class="bom-body">
 
 <section class="form-box">
-    <h1>Stykliste</h1>
+    <h1>Stykliste og tegning</h1>
+
+
 
     <table>
         <tr>
@@ -38,13 +40,36 @@
         <tr th:each="line : ${bomLines}">
             <td th:text="${line.materialItem.name}"></td>
             <td><span th:text="${line.materialItem.length}"></span> cm</td>
-            <td><span th:text="${line.quantity}"></span> stk.</td>
-            <td><span th:text="${line.unitPrice}"></span> kr.</td>
-            <td><span th:text="${line.linePrice}"></span> kr.</td>
+            <td><span th:text="${line.quantity}"></span></td>
+
+            <td class="price-cell">
+                <span th:text="${#numbers.formatDecimal(line.unitPrice, 1, 2)}"></span> kr.
+            </td>
+
+            <td class="price-cell">
+                <span th:text="${#numbers.formatDecimal(line.linePrice, 1, 2)}"></span> kr.
+            </td>
+        </tr>
+
+        <tr class="total-row">
+            <td><strong>Pris i alt:</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td class="price-cell">
+                <strong>
+                    <span th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}"></span> kr.
+                </strong>
+            </td>
         </tr>
     </table>
 
-    <button type="button" onclick="window.close()" class="logout-btn">Luk</button>
+    <div class="bom-drawing" th:utext="${svg}"></div>
+
+    <button type="button" onclick="window.parent.document.getElementById('bomDialog').close()" class="logout-btn">
+        Luk
+    </button>
 </section>
 
 </body>

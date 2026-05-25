@@ -11,9 +11,16 @@
           href="../public/css/styles.css"
           th:href="@{/css/styles.css}">
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
           rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 
     <!-- JavaScript -->
     <script src="../public/js/script.js"
@@ -23,18 +30,45 @@
 
 <body>
 
-<section class="form-box">
-    <h1>Login</h1>
+<header class="site-header">
+    <img src="/images/fog_logo.png" alt="Fog Carporte" class="site-logo">
+</header>
 
-    <form method="post" action="/login" class="carport-form">
+<section class="form-box login-form">
+    <div class="login-avatar">
+        <i class="fa-solid fa-user"></i>
+    </div>
 
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required>
+    <p class="login-subtitle">
+        Velkommen tilbage.<br>
+        Log på for at se dine tilbud og ordrer.
+    </p>
 
-        <label for="password">Adgangskode</label>
-        <input type="password" id="password" name="password" required>
+    <p th:if="${error}" th:text="${error}" class="error-message"></p>
 
-        <button type="submit">Log ind</button>
+    <form method="post" action="/login" class="login-fields">
+
+        <div class="login-field">
+
+            <div class="login-input">
+                <i class="fa-regular fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Indtast e-mail" required>
+            </div>
+        </div>
+
+        <div class="login-field">
+
+            <div class="login-input">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Indtast adgangskode" required>
+
+                <button type="button" class="toggle-password" onclick="togglePassword()">
+                    <i class="fa-regular fa-eye" id="passwordEye"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="login-submit-btn">Log på</button>
 
     </form>
 </section>

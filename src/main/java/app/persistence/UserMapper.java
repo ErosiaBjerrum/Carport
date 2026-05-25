@@ -1,11 +1,14 @@
 package app.persistence;
 
 import app.config.ConnectionPool;
+import app.entities.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
 
@@ -55,10 +58,10 @@ public class UserMapper {
         }
     }
 
-    public static Integer login(String email, String password) throws SQLException {
+    public static User login(String email, String password) throws SQLException {
 
         String sql = """
-            SELECT user_id
+            SELECT user_id, role
             FROM user_account
             WHERE email = ? AND password = ?
             """;
@@ -71,7 +74,16 @@ public class UserMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("user_id");
+                    return new User(
+                            rs.getInt("user_id"),
+                            rs.getString("role"),
+                            null,
+                            null,
+                            null,
+                            null,
+                            0,
+                            null
+                    );
                 } else {
                     return null;
                 }
@@ -92,6 +104,49 @@ public class UserMapper {
                 return rs.next();
             }
         }
+    }
+
+    public static List<User> getAllCustomers() throws SQLException {
+
+        String sql = """
+            SELECT 
+                ua.user_id,
+                ua.role,
+                ua.name,
+                ua.email,
+                ua.phone,
+                ua.address,
+                ua.zip_code,
+                zc.city
+            FROM user_account ua
+            JOIN zip_code zc
+                ON ua.zip_code = zc.zip_code
+            WHERE role = 'customer'
+            ORDER BY user_id ASC
+            """;
+
+        List<User> customers = new ArrayList<>();
+
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                customers.add(new User(
+                        rs.getInt("user_id"),
+                        rs.getString("role"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getInt("zip_code"),
+                        rs.getString("city")
+                ));
+            }
+        }
+
+        return customers;
     }
 
 }

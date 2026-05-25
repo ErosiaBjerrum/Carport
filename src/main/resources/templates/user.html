@@ -11,9 +11,15 @@
           href="../public/css/styles.css"
           th:href="@{/css/styles.css}">
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
           rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- JavaScript -->
     <script src="../public/js/script.js"
@@ -23,29 +29,45 @@
 
 <body>
 
-<a href="/" class="logout-btn logout-top-right">Log af</a>
+<header class="site-header">
+    <img src="/images/fog_logo.png" alt="Fog Carporte" class="site-logo">
+</header>
+
+<a href="/logout" class="logout-btn logout-top-right">Log af</a>
 
 <section class="user-page">
+
+    <div th:if="${successMessage}" id="successModal" class="success-modal">
+        <div class="success-modal-content">
+            <p th:text="${successMessage}"></p>
+
+            <button onclick="closeSuccessModal()" class="accept-btn">
+                OK
+            </button>
+        </div>
+    </div>
 
     <h1>Min side (<span th:text="${email}"></span>)</h1>
 
     <section class="user-offer-form">
         <h2>Generer tilbud</h2>
 
+        <p class="offer-subtitle">Vælg carportens mål</p>
+
         <p th:if="${error}" th:text="${error}" class="error-message"></p>
 
         <form method="post" action="/user/create-offer" class="carport-form">
 
-            <label for="length">Længde i cm</label>
+            <label for="length">Længde</label>
             <input type="text"
                    id="length"
                    name="length"
                    inputmode="numeric"
-                   placeholder="240-720 cm"
+                   placeholder="240-780 cm"
                    required
                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
 
-            <label for="width">Bredde i cm</label>
+            <label for="width">Bredde</label>
             <input type="text"
                    id="width"
                    name="width"
@@ -61,51 +83,138 @@
 
     <div class="user-columns">
 
-        <section class="user-column">
+        <section class="user-section user-offers-section">
             <h2>Dine tilbud</h2>
 
-            <div class="offer-line" th:each="offer : ${offers}">
-                <span>
-                    Carport:
-                    <span th:text="${offer.length}"></span> cm L,
-                    <span th:text="${offer.width}"></span> cm B,
-                    <span th:text="${offer.price}"></span> kr.
-                </span>
 
+            <!--TESTVERSION MED EKSEMPELDATA-->
+            <div class="user-offer-card">
+                <div class="user-offer-info">
+                    <div class="offer-title">
+                        Carport (L x B): 600  × 420 cm
+                    </div>
+
+                    <div class="offer-price">
+                        Tilbudspris: 28.500 kr.
+                    </div>
+
+                    <div class="offer-date">
+                        Oprettet: 25-05-2026 14:32
+                    </div>
+                </div>
+
+                <div class="user-card-buttons">
+                    <button type="button" class="reject-btn">Afvis</button>
+                    <button type="button" class="accept-btn">Vis</button>
+                    <button type="button" class="accept-btn">Acceptér</button>
+                </div>
+            </div>
+
+            <div class="user-offer-card">
+                <div class="user-offer-info">
+                    <div class="offer-title">
+                        Carport: 480 × 360 cm
+                    </div>
+
+                    <div class="offer-price">
+                        Tilbudspris: 21.800 kr.
+                    </div>
+
+                    <div class="offer-date">
+                        Oprettet 24-05-2026 10:18
+                    </div>
+                </div>
+
+                <div class="user-card-buttons">
+                    <button type="button" class="reject-btn">Afvis</button>
+                    <button type="button" class="accept-btn">Vis</button>
+                    <button type="button" class="accept-btn">Acceptér</button>
+                </div>
+            </div>
+
+            <div class="user-offer-card">
+                <div class="user-offer-info">
+                    <div class="offer-title">
+                        Carport: 720 × 600 cm
+                    </div>
+
+                    <div class="offer-price">
+                        Tilbudspris: 39.900 kr.
+                    </div>
+
+                    <div class="offer-date">
+                        Oprettet 22-05-2026 16:45
+                    </div>
+                </div>
+
+                <div class="user-card-buttons">
+                    <button type="button" class="reject-btn">Afvis</button>
+                    <button type="button" class="accept-btn">Vis</button>
+                    <button type="button" class="accept-btn">Acceptér</button>
+                </div>
+            </div>
+
+            <!--<div class="user-offer-card" th:each="offer : ${offers}">
+                <div class="user-offer-info">
+                    <div class="offer-title">
+                        Carport
+                        <span th:text="${offer.length}"></span>
+                        ×
+                        <span th:text="${offer.width}"></span>
+                        cm
+                    </div>
+
+                    <div class="offer-price">
+                        <span th:text="${offer.price}"></span> kr.
+                    </div>
+
+                    <div class="offer-date">
+                        Oprettet
+                        <span th:text="${#temporals.format(offer.offerDateFormatted, 'dd-MM-yyyy HH:mm')}"></span>
+                    </div>
+                </div>
+
+                <div class="user-card-buttons">
                 <form method="post" action="/reject-offer">
                     <input type="hidden" name="offerId" th:value="${offer.offerId}">
                     <button type="submit" class="reject-btn">Afvis</button>
                 </form>
 
+                <form method="post" action="/show-offer">
+                    <input type="hidden" name="offerId" th:value="${offer.offerId}">
+                    <button type="submit" class="accept-btn">Vis</button>
+                </form>
+
                 <form method="post" action="/accept-offer">
                     <input type="hidden" name="offerId" th:value="${offer.offerId}">
-                    <button type="submit" class="accept-btn">Acceptér</button>
+
+                    <button type="button"
+                            class="accept-btn"
+                            onclick="openAcceptModal(this)">
+                        Acceptér
+                    </button>
                 </form>
-            </div>
+                </div>
+            </div>-->
         </section>
 
-        <section class="user-column">
+        <section class="user-section user-orders-section">
             <h2>Dine ordrer</h2>
 
-            <div class="offer-line" th:each="order : ${orders}">
+            <div class="user-order-card" th:each="order : ${orders}">
         <span>
             Ordrenr. <span th:text="${order.orderId}"></span>:
             Carport:
             <span th:text="${order.length}"></span> cm L,
             <span th:text="${order.width}"></span> cm B,
             <span th:text="${order.price}"></span> kr.
+            (<span th:text="${#temporals.format(order.orderDateFormatted, 'dd-MM-yyyy HH:mm')}"></span>)
         </span>
 
-                <form method="post" action="/order/bom" target="bomPopup"
-                  onsubmit="
-                  const w = 800;
-                  const h = 600;
-                  const left = (screen.width - w) / 2;
-                  const top = (screen.height - h) / 2;
-                  window.open('', 'bomPopup',
-                  `width=${w},height=${h},left=${left},top=${top}`);">
+                <form method="post" action="/order/bom" target="bomFrame"
+                      onsubmit="document.getElementById('bomDialog').showModal(); return true;">
                     <input type="hidden" name="offerId" th:value="${order.offerId}">
-                    <button type="submit" class="accept-btn">Vis stykliste</button>
+                    <button type="submit" class="accept-btn">Vis detaljer</button>
                 </form>
             </div>
 
@@ -113,9 +222,55 @@
 
     </div>
 
-
-
 </section>
+
+<dialog id="bomDialog" class="bom-dialog">
+    <iframe name="bomFrame" class="bom-frame"></iframe>
+</dialog>
+
+<div th:if="${newOffer}" id="offerModal" class="success-modal">
+
+    <div class="success-modal-content">
+
+        <h2>Nyt tilbud genereret</h2>
+
+        <p>
+            Carport:
+            <span th:text="${newOffer.length}"></span> cm L,
+            <span th:text="${newOffer.width}"></span> cm B
+        </p>
+
+        <p>
+            Pris:
+            <span th:text="${newOffer.price}"></span> kr.
+        </p>
+
+        <div th:utext="${svg}"></div>
+
+        <button onclick="closeOfferModal()" class="accept-btn">
+            OK
+        </button>
+
+    </div>
+
+</div>
+
+<dialog id="acceptDialog" class="accept-dialog">
+    <h2>Acceptér tilbud?</h2>
+    <p>Er du sikker på, at du vil acceptere tilbuddet og oprette en ordre?</p>
+
+    <div class="modal-buttons">
+        <button type="button" class="reject-btn" onclick="document.getElementById('acceptDialog').close()">
+            Annuller
+        </button>
+
+        <button type="button"
+                class="accept-btn"
+                onclick="submitAcceptForm()">
+            Ja, acceptér
+        </button>
+    </div>
+</dialog>
 
 </body>
 </html>

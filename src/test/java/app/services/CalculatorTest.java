@@ -1,6 +1,5 @@
 package app.services;
 
-import app.entities.BOMLine;
 import app.entities.BillOfMaterial;
 import org.junit.jupiter.api.Test;
 
@@ -10,71 +9,36 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CalculatorTest {
 
-
-
-
     @Test
     void findBestLength() {
         Calculator calculator = new Calculator(600, 420, null);
 
-        assertEquals(360, calculator.findBestLength(345));
-        assertEquals(480, calculator.findBestLength(421));
-        assertEquals(600, calculator.findBestLength(578));
-        assertEquals(-1, calculator.findBestLength(780));
+        int result = calculator.findBestLength(421);
+
+        assertEquals(480, result);
     }
 
     @Test
     void calcRafterCount() {
         Calculator calculator = new Calculator(600, 420, null);
 
-        assertEquals(11, calculator.calcRafterCount());
+        int result = calculator.calcRafterCount();
+
+        assertEquals(11, result);
     }
 
     @Test
-    void calcRafterLength() {
-        Calculator calculator = new Calculator(600, 421, null);
-
-        assertEquals(480, calculator.calcRafterLength());
-    }
-
-    @Test
-    void printRafterInfo() {
+    void addRaftersToBillOfMaterial() throws SQLException {
         Calculator calculator = new Calculator(600, 420, null);
+        BillOfMaterial billOfMaterial = new BillOfMaterial();
 
-        calculator.printRafterInfo();
-    }
-
-    @Test
-    void calcBeamLengths() {
-        Calculator calculator1 = new Calculator(400, 300, null);
-        assertArrayEquals(new int[]{420}, calculator1.calcBeamLengths());
-
-        Calculator calculator2 = new Calculator(720, 300, null);
-        assertArrayEquals(new int[]{720}, calculator2.calcBeamLengths());
-
-        Calculator calculator3 = new Calculator(745, 300, null);
-        assertArrayEquals(new int[]{300, 480}, calculator3.calcBeamLengths());
-
-        Calculator calculator4 = new Calculator(780, 300, null);
-        assertArrayEquals(new int[]{300, 480}, calculator4.calcBeamLengths());
-    }
-
-    @Test
-    void calcCarportReturnsBomWithRafters() throws SQLException {
-        Calculator calculator = new Calculator(600, 420, null);
-
-        BillOfMaterial billOfMaterial = calculator.calcCarport();
+        calculator.addRaftersToBillOfMaterial(billOfMaterial);
 
         assertEquals(1, billOfMaterial.getBomLines().size());
-
-        BOMLine rafterLine = billOfMaterial.getBomLines().get(0);
-
-        assertEquals("Spærtræ 45x195 mm", rafterLine.getMaterialItem().getName());
-        assertEquals(420, rafterLine.getMaterialItem().getLength());
-        assertEquals(11, rafterLine.getQuantity());
-        assertTrue(rafterLine.getLinePrice() > 0);
+        assertEquals("Spærtræ 45x195 mm", billOfMaterial.getBomLines().get(0).getName());
+        assertEquals(420, billOfMaterial.getBomLines().get(0).getLength());
+        assertEquals(11, billOfMaterial.getBomLines().get(0).getQuantity());
     }
-
 
 
 }

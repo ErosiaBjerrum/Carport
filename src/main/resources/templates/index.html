@@ -11,9 +11,15 @@
           href="../public/css/styles.css"
           th:href="@{/css/styles.css}">
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
           rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- JavaScript -->
     <script src="../public/js/script.js"
@@ -22,38 +28,64 @@
 </head>
 <body>
 
-    <nav class="top-buttons">
-        <a href="/login">Log på</a>
-        <a href="/create-user">Opret bruger</a>
-    </nav>
+<header class="site-header">
+    <img src="/images/fog_logo.png" alt="Fog Carporte" class="site-logo">
 
-    <section class="form-box">
-        <h1>FOG CARPORTE<br>konfigurer din skræddersyede carport</h1>
+    <nav class="top-buttons">
+        <a href="/login" class="login-btn">
+            <i class="fa-regular fa-user"></i>
+            Log på
+        </a>
+        <a href="/create-user" class="create-user-btn">
+            <i class="fa-solid fa-user-plus"></i>
+            Opret bruger
+        </a>
+    </nav>
+</header>
+
+    <section class="form-box frontpage-form">
+
+        <img src="/images/carport.png" alt="Carport" class="carport-img">
+
+        <h1>Design din carport</h1>
+
+        <p class="form-subtitle">
+            Eksklusive carportløsninger efter mål
+        </p>
+
+        <div class="form-divider"></div>
 
         <p th:if="${error}" th:text="${error}" class="error-message"></p>
         <form method="post" action="/offer" class="carport-form">
 
-            <label for="length">Længde i cm</label>
-            <input type="text"
-                   id="length"
-                   name="length"
-                   inputmode="numeric"
-                   placeholder="240-720 cm"
-                   required
-                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
 
-            <label for="width">Bredde i cm</label>
-            <input type="text"
-                   id="width"
-                   name="width"
-                   inputmode="numeric"
-                   placeholder="240-600 cm"
-                   required
-                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <div class="input-fields">
+                    <label for="length">Længde</label>
+                    <input type="text"
+                           id="length"
+                           name="length"
+                           inputmode="numeric"
+                           placeholder="240-780 cm"
+                           required
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')">
 
-            <button type="submit">Se tilbud</button>
+                    <label for="width" class="width-label">Bredde</label>
+                    <input type="text"
+                           id="width"
+                           name="width"
+                           inputmode="numeric"
+                           placeholder="240-600 cm"
+                           required
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
 
-        </form>
+            <button type="submit" class="offer-submit-btn">
+                <i class="fa-solid fa-calculator"></i>
+                <span>Beregn tilbud</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            </form>
 
    </section>
 

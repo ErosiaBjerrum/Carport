@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict Q72k2TAjnL2gELbhUzstWjglrAn0U2EnzJKqf3awPpYnZF5ZyupG2GDw2gzmbtn
+\restrict M9TfpQCbTScrm5rWGp8GSYGDmWwYT5kylWSFgFBXJdiansjiYwemHOwPM4iAlnV
 
 -- Dumped from database version 16.2 (Debian 16.2-1.pgdg120+2)
 -- Dumped by pg_dump version 16.11
 
--- Started on 2026-05-19 09:07:16 CEST
+-- Started on 2026-05-22 13:19:53 CEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -54,7 +54,7 @@ CREATE SEQUENCE public.bill_of_material_bom_id_seq
 ALTER SEQUENCE public.bill_of_material_bom_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3486 (class 0 OID 0)
+-- TOC entry 3487 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: bill_of_material_bom_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -96,7 +96,7 @@ CREATE SEQUENCE public.bom_line_line_id_seq
 ALTER SEQUENCE public.bom_line_line_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3487 (class 0 OID 0)
+-- TOC entry 3488 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: bom_line_line_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -136,7 +136,7 @@ CREATE SEQUENCE public.carport_request_request_id_seq
 ALTER SEQUENCE public.carport_request_request_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3488 (class 0 OID 0)
+-- TOC entry 3489 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: carport_request_request_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -176,7 +176,7 @@ CREATE SEQUENCE public.customer_order_order_id_seq
 ALTER SEQUENCE public.customer_order_order_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3489 (class 0 OID 0)
+-- TOC entry 3490 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: customer_order_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -214,7 +214,7 @@ CREATE SEQUENCE public.length_set_length_set_id_seq
 ALTER SEQUENCE public.length_set_length_set_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3490 (class 0 OID 0)
+-- TOC entry 3491 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: length_set_length_set_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -256,7 +256,7 @@ CREATE SEQUENCE public.length_set_value_length_set_value_id_seq
 ALTER SEQUENCE public.length_set_value_length_set_value_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3491 (class 0 OID 0)
+-- TOC entry 3492 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: length_set_value_length_set_value_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -308,7 +308,7 @@ CREATE SEQUENCE public.material_material_id_seq
 ALTER SEQUENCE public.material_material_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3492 (class 0 OID 0)
+-- TOC entry 3493 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: material_material_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -333,7 +333,7 @@ CREATE SEQUENCE public.material_material_id_seq1
 ALTER SEQUENCE public.material_material_id_seq1 OWNER TO postgres;
 
 --
--- TOC entry 3493 (class 0 OID 0)
+-- TOC entry 3494 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: material_material_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -349,7 +349,8 @@ ALTER SEQUENCE public.material_material_id_seq1 OWNED BY public.material_item.ma
 CREATE TABLE public.offer (
     offer_id integer NOT NULL,
     request_id integer NOT NULL,
-    total_price numeric(10,2) NOT NULL
+    total_price numeric(10,2) NOT NULL,
+    offer_date timestamp without time zone DEFAULT now()
 );
 
 
@@ -372,7 +373,7 @@ CREATE SEQUENCE public.offer_offer_id_seq
 ALTER SEQUENCE public.offer_offer_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3494 (class 0 OID 0)
+-- TOC entry 3495 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: offer_offer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -416,7 +417,7 @@ CREATE SEQUENCE public.user_account_user_id_seq
 ALTER SEQUENCE public.user_account_user_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3495 (class 0 OID 0)
+-- TOC entry 3496 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: user_account_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -438,7 +439,7 @@ CREATE TABLE public.zip_code (
 ALTER TABLE public.zip_code OWNER TO postgres;
 
 --
--- TOC entry 3255 (class 2604 OID 90299)
+-- TOC entry 3256 (class 2604 OID 90299)
 -- Name: bill_of_material bom_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -446,7 +447,7 @@ ALTER TABLE ONLY public.bill_of_material ALTER COLUMN bom_id SET DEFAULT nextval
 
 
 --
--- TOC entry 3257 (class 2604 OID 90320)
+-- TOC entry 3258 (class 2604 OID 90320)
 -- Name: bom_line bom_line_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -462,7 +463,7 @@ ALTER TABLE ONLY public.carport_request ALTER COLUMN request_id SET DEFAULT next
 
 
 --
--- TOC entry 3258 (class 2604 OID 90337)
+-- TOC entry 3259 (class 2604 OID 90337)
 -- Name: customer_order order_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -470,7 +471,7 @@ ALTER TABLE ONLY public.customer_order ALTER COLUMN order_id SET DEFAULT nextval
 
 
 --
--- TOC entry 3260 (class 2604 OID 106500)
+-- TOC entry 3261 (class 2604 OID 106500)
 -- Name: length_set length_set_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -478,7 +479,7 @@ ALTER TABLE ONLY public.length_set ALTER COLUMN length_set_id SET DEFAULT nextva
 
 
 --
--- TOC entry 3261 (class 2604 OID 106509)
+-- TOC entry 3262 (class 2604 OID 106509)
 -- Name: length_set_value length_set_value_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -486,7 +487,7 @@ ALTER TABLE ONLY public.length_set_value ALTER COLUMN length_set_value_id SET DE
 
 
 --
--- TOC entry 3262 (class 2604 OID 106549)
+-- TOC entry 3263 (class 2604 OID 106549)
 -- Name: material_item material_item_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -494,7 +495,7 @@ ALTER TABLE ONLY public.material_item ALTER COLUMN material_item_id SET DEFAULT 
 
 
 --
--- TOC entry 3256 (class 2604 OID 90313)
+-- TOC entry 3257 (class 2604 OID 90313)
 -- Name: material_type material_type_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -518,72 +519,79 @@ ALTER TABLE ONLY public.user_account ALTER COLUMN user_id SET DEFAULT nextval('p
 
 
 --
--- TOC entry 3468 (class 0 OID 90296)
+-- TOC entry 3469 (class 0 OID 90296)
 -- Dependencies: 223
 -- Data for Name: bill_of_material; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.bill_of_material (bom_id, offer_id) FROM stdin;
-1	11
-2	12
-3	13
+23	1
+24	2
+25	3
+26	4
+27	5
+28	6
 \.
 
 
 --
--- TOC entry 3472 (class 0 OID 90317)
+-- TOC entry 3473 (class 0 OID 90317)
 -- Dependencies: 227
 -- Data for Name: bom_line; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.bom_line (bom_line_id, bom_id, quantity, material_id, usage) FROM stdin;
-1	1	9	8	Konstruktion
-2	2	7	12	Konstruktion
-3	2	2	3	Konstruktion
-4	3	9	8	Konstruktion
-5	3	2	7	Konstruktion
-6	3	6	15	Konstruktion
+1	23	9	8	Konstruktion
+2	23	2	7	Konstruktion
+3	23	6	15	Konstruktion
+4	24	7	4	Konstruktion
+5	24	2	3	Konstruktion
+6	24	6	15	Konstruktion
+7	25	7	4	Konstruktion
+8	25	2	3	Konstruktion
+9	25	6	15	Konstruktion
+10	26	9	8	Konstruktion
+11	26	2	7	Konstruktion
+12	26	6	15	Konstruktion
+13	27	7	4	Konstruktion
+14	27	2	3	Konstruktion
+15	27	6	15	Konstruktion
+16	28	11	12	Konstruktion
+17	28	2	11	Konstruktion
+18	28	6	15	Konstruktion
 \.
 
 
 --
--- TOC entry 3464 (class 0 OID 90255)
+-- TOC entry 3465 (class 0 OID 90255)
 -- Dependencies: 219
 -- Data for Name: carport_request; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.carport_request (request_id, user_id, length, width) FROM stdin;
-1	1	600	300
-2	2	600	300
-3	1	545	555
-4	1	555	555
-5	1	444	444
-6	1	333	335
-7	1	1123	13
-8	1	355	355
-9	1	344	344
-10	1	666	555
-11	1	444	444
-12	1	355	544
-13	1	450	450
+1	1	444	444
+2	1	333	333
+3	1	333	333
+4	1	444	444
+5	1	333	334
+6	1	555	556
 \.
 
 
 --
--- TOC entry 3474 (class 0 OID 90334)
+-- TOC entry 3475 (class 0 OID 90334)
 -- Dependencies: 229
 -- Data for Name: customer_order; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.customer_order (order_id, offer_id, user_id, order_date) FROM stdin;
-1	13	1	2026-05-18 18:19:25.488939
-3	12	1	2026-05-18 18:21:02.266063
-4	11	1	2026-05-18 18:24:17.608105
+20	2	1	2026-05-22 12:43:20.875734
+21	6	1	2026-05-22 13:07:52.640665
 \.
 
 
 --
--- TOC entry 3476 (class 0 OID 106497)
+-- TOC entry 3477 (class 0 OID 106497)
 -- Dependencies: 231
 -- Data for Name: length_set; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -595,7 +603,7 @@ COPY public.length_set (length_set_id, name) FROM stdin;
 
 
 --
--- TOC entry 3478 (class 0 OID 106506)
+-- TOC entry 3479 (class 0 OID 106506)
 -- Dependencies: 233
 -- Data for Name: length_set_value; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -614,7 +622,7 @@ COPY public.length_set_value (length_set_value_id, length_set_id, length_cm, pri
 
 
 --
--- TOC entry 3480 (class 0 OID 106546)
+-- TOC entry 3481 (class 0 OID 106546)
 -- Dependencies: 235
 -- Data for Name: material_item; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -635,11 +643,12 @@ COPY public.material_item (material_item_id, material_type_id, length_set_value_
 13	11	21
 14	10	21
 15	12	22
+16	11	23
 \.
 
 
 --
--- TOC entry 3470 (class 0 OID 90310)
+-- TOC entry 3471 (class 0 OID 90310)
 -- Dependencies: 225
 -- Data for Name: material_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -652,24 +661,23 @@ COPY public.material_type (material_type_id, name) FROM stdin;
 
 
 --
--- TOC entry 3466 (class 0 OID 90282)
+-- TOC entry 3467 (class 0 OID 90282)
 -- Dependencies: 221
 -- Data for Name: offer; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.offer (offer_id, request_id, total_price) FROM stdin;
-2	2	10000.00
-8	8	10000.00
-9	9	10000.00
-10	10	10000.00
-11	11	2287.00
-12	12	3739.00
-13	13	4127.00
+COPY public.offer (offer_id, request_id, total_price, offer_date) FROM stdin;
+1	1	4127.00	2026-05-22 12:33:30.023963
+2	2	3047.00	2026-05-22 12:42:48.211741
+3	3	3047.00	2026-05-22 12:45:36.253003
+4	4	4127.00	2026-05-22 12:47:46.023712
+5	5	3047.00	2026-05-22 12:51:10.784533
+6	6	7567.00	2026-05-22 12:53:57.627498
 \.
 
 
 --
--- TOC entry 3462 (class 0 OID 90239)
+-- TOC entry 3463 (class 0 OID 90239)
 -- Dependencies: 217
 -- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -677,11 +685,13 @@ COPY public.offer (offer_id, request_id, total_price) FROM stdin;
 COPY public.user_account (user_id, name, password, email, phone, address, zip_code, role) FROM stdin;
 1	Anders Bjerrum	1212	anders.bjerrum86@gmail.com	21482661	Blommehaven 8	3700	customer
 2	Anders Bjerrum	1212	anders.bjerrum87@gmail.com	21482661	Blommehaven 8	3700	customer
+3	Demo Admin	admin123	admin@fog.dk	12345678	Adminvej 1	3700	admin
+4	Anders Bjerrum	1212	anders.bjerrum88@gmail.com	21482661	Blommehaven 8	3700	customer
 \.
 
 
 --
--- TOC entry 3460 (class 0 OID 90233)
+-- TOC entry 3461 (class 0 OID 90233)
 -- Dependencies: 215
 -- Data for Name: zip_code; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1270,43 +1280,43 @@ COPY public.zip_code (zip_code, city) FROM stdin;
 
 
 --
--- TOC entry 3496 (class 0 OID 0)
+-- TOC entry 3497 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: bill_of_material_bom_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.bill_of_material_bom_id_seq', 3, true);
-
-
---
--- TOC entry 3497 (class 0 OID 0)
--- Dependencies: 226
--- Name: bom_line_line_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.bom_line_line_id_seq', 6, true);
+SELECT pg_catalog.setval('public.bill_of_material_bom_id_seq', 28, true);
 
 
 --
 -- TOC entry 3498 (class 0 OID 0)
--- Dependencies: 218
--- Name: carport_request_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Dependencies: 226
+-- Name: bom_line_line_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.carport_request_request_id_seq', 13, true);
+SELECT pg_catalog.setval('public.bom_line_line_id_seq', 18, true);
 
 
 --
 -- TOC entry 3499 (class 0 OID 0)
--- Dependencies: 228
--- Name: customer_order_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Dependencies: 218
+-- Name: carport_request_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.customer_order_order_id_seq', 4, true);
+SELECT pg_catalog.setval('public.carport_request_request_id_seq', 6, true);
 
 
 --
 -- TOC entry 3500 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: customer_order_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customer_order_order_id_seq', 21, true);
+
+
+--
+-- TOC entry 3501 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: length_set_length_set_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1315,7 +1325,7 @@ SELECT pg_catalog.setval('public.length_set_length_set_id_seq', 4, true);
 
 
 --
--- TOC entry 3501 (class 0 OID 0)
+-- TOC entry 3502 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: length_set_value_length_set_value_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1324,7 +1334,7 @@ SELECT pg_catalog.setval('public.length_set_value_length_set_value_id_seq', 23, 
 
 
 --
--- TOC entry 3502 (class 0 OID 0)
+-- TOC entry 3503 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: material_material_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1333,34 +1343,34 @@ SELECT pg_catalog.setval('public.material_material_id_seq', 12, true);
 
 
 --
--- TOC entry 3503 (class 0 OID 0)
+-- TOC entry 3504 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: material_material_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.material_material_id_seq1', 15, true);
-
-
---
--- TOC entry 3504 (class 0 OID 0)
--- Dependencies: 220
--- Name: offer_offer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.offer_offer_id_seq', 13, true);
+SELECT pg_catalog.setval('public.material_material_id_seq1', 16, true);
 
 
 --
 -- TOC entry 3505 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: offer_offer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.offer_offer_id_seq', 6, true);
+
+
+--
+-- TOC entry 3506 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: user_account_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_account_user_id_seq', 2, true);
+SELECT pg_catalog.setval('public.user_account_user_id_seq', 4, true);
 
 
 --
--- TOC entry 3279 (class 2606 OID 90303)
+-- TOC entry 3280 (class 2606 OID 90303)
 -- Name: bill_of_material bill_of_material_offer_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1369,7 +1379,7 @@ ALTER TABLE ONLY public.bill_of_material
 
 
 --
--- TOC entry 3281 (class 2606 OID 90301)
+-- TOC entry 3282 (class 2606 OID 90301)
 -- Name: bill_of_material bill_of_material_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1378,7 +1388,7 @@ ALTER TABLE ONLY public.bill_of_material
 
 
 --
--- TOC entry 3287 (class 2606 OID 90322)
+-- TOC entry 3288 (class 2606 OID 90322)
 -- Name: bom_line bom_line_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1387,7 +1397,7 @@ ALTER TABLE ONLY public.bom_line
 
 
 --
--- TOC entry 3273 (class 2606 OID 90261)
+-- TOC entry 3274 (class 2606 OID 90261)
 -- Name: carport_request carport_request_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1396,7 +1406,7 @@ ALTER TABLE ONLY public.carport_request
 
 
 --
--- TOC entry 3291 (class 2606 OID 90342)
+-- TOC entry 3292 (class 2606 OID 90342)
 -- Name: customer_order customer_order_offer_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1405,7 +1415,7 @@ ALTER TABLE ONLY public.customer_order
 
 
 --
--- TOC entry 3293 (class 2606 OID 90340)
+-- TOC entry 3294 (class 2606 OID 90340)
 -- Name: customer_order customer_order_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1414,7 +1424,7 @@ ALTER TABLE ONLY public.customer_order
 
 
 --
--- TOC entry 3295 (class 2606 OID 106504)
+-- TOC entry 3296 (class 2606 OID 106504)
 -- Name: length_set length_set_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1423,7 +1433,7 @@ ALTER TABLE ONLY public.length_set
 
 
 --
--- TOC entry 3299 (class 2606 OID 106511)
+-- TOC entry 3300 (class 2606 OID 106511)
 -- Name: length_set_value length_set_value_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1432,7 +1442,7 @@ ALTER TABLE ONLY public.length_set_value
 
 
 --
--- TOC entry 3303 (class 2606 OID 106551)
+-- TOC entry 3304 (class 2606 OID 106551)
 -- Name: material_item material_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1441,7 +1451,7 @@ ALTER TABLE ONLY public.material_item
 
 
 --
--- TOC entry 3283 (class 2606 OID 90315)
+-- TOC entry 3284 (class 2606 OID 90315)
 -- Name: material_type material_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1450,7 +1460,7 @@ ALTER TABLE ONLY public.material_type
 
 
 --
--- TOC entry 3275 (class 2606 OID 90287)
+-- TOC entry 3276 (class 2606 OID 90287)
 -- Name: offer offer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1459,7 +1469,7 @@ ALTER TABLE ONLY public.offer
 
 
 --
--- TOC entry 3277 (class 2606 OID 90289)
+-- TOC entry 3278 (class 2606 OID 90289)
 -- Name: offer offer_request_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1468,7 +1478,7 @@ ALTER TABLE ONLY public.offer
 
 
 --
--- TOC entry 3301 (class 2606 OID 106535)
+-- TOC entry 3302 (class 2606 OID 106535)
 -- Name: length_set_value unique_length_per_set; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1477,7 +1487,7 @@ ALTER TABLE ONLY public.length_set_value
 
 
 --
--- TOC entry 3297 (class 2606 OID 106537)
+-- TOC entry 3298 (class 2606 OID 106537)
 -- Name: length_set unique_length_set_name; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1486,7 +1496,7 @@ ALTER TABLE ONLY public.length_set
 
 
 --
--- TOC entry 3305 (class 2606 OID 106553)
+-- TOC entry 3306 (class 2606 OID 106553)
 -- Name: material_item unique_material_combination; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1495,7 +1505,7 @@ ALTER TABLE ONLY public.material_item
 
 
 --
--- TOC entry 3285 (class 2606 OID 106539)
+-- TOC entry 3286 (class 2606 OID 106539)
 -- Name: material_type unique_material_type_name; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1504,7 +1514,7 @@ ALTER TABLE ONLY public.material_type
 
 
 --
--- TOC entry 3289 (class 2606 OID 114691)
+-- TOC entry 3290 (class 2606 OID 114691)
 -- Name: bom_line uq_bom_line_bom_id_material_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1513,7 +1523,7 @@ ALTER TABLE ONLY public.bom_line
 
 
 --
--- TOC entry 3269 (class 2606 OID 90248)
+-- TOC entry 3270 (class 2606 OID 90248)
 -- Name: user_account user_account_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1522,7 +1532,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- TOC entry 3271 (class 2606 OID 90246)
+-- TOC entry 3272 (class 2606 OID 90246)
 -- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1531,7 +1541,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- TOC entry 3267 (class 2606 OID 90237)
+-- TOC entry 3268 (class 2606 OID 90237)
 -- Name: zip_code zip_code_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1540,7 +1550,7 @@ ALTER TABLE ONLY public.zip_code
 
 
 --
--- TOC entry 3310 (class 2606 OID 90328)
+-- TOC entry 3311 (class 2606 OID 90328)
 -- Name: bom_line fk_bom_line_bom; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1549,7 +1559,7 @@ ALTER TABLE ONLY public.bom_line
 
 
 --
--- TOC entry 3311 (class 2606 OID 106564)
+-- TOC entry 3312 (class 2606 OID 106564)
 -- Name: bom_line fk_bom_line_material; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1558,7 +1568,7 @@ ALTER TABLE ONLY public.bom_line
 
 
 --
--- TOC entry 3309 (class 2606 OID 90304)
+-- TOC entry 3310 (class 2606 OID 90304)
 -- Name: bill_of_material fk_bom_offer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1567,7 +1577,7 @@ ALTER TABLE ONLY public.bill_of_material
 
 
 --
--- TOC entry 3314 (class 2606 OID 106512)
+-- TOC entry 3315 (class 2606 OID 106512)
 -- Name: length_set_value fk_length_set_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1576,7 +1586,7 @@ ALTER TABLE ONLY public.length_set_value
 
 
 --
--- TOC entry 3315 (class 2606 OID 106559)
+-- TOC entry 3316 (class 2606 OID 106559)
 -- Name: material_item fk_material_length_set_value; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1585,7 +1595,7 @@ ALTER TABLE ONLY public.material_item
 
 
 --
--- TOC entry 3316 (class 2606 OID 106554)
+-- TOC entry 3317 (class 2606 OID 106554)
 -- Name: material_item fk_material_material_type; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1594,7 +1604,7 @@ ALTER TABLE ONLY public.material_item
 
 
 --
--- TOC entry 3308 (class 2606 OID 90290)
+-- TOC entry 3309 (class 2606 OID 90290)
 -- Name: offer fk_offer_request; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1603,7 +1613,7 @@ ALTER TABLE ONLY public.offer
 
 
 --
--- TOC entry 3312 (class 2606 OID 90343)
+-- TOC entry 3313 (class 2606 OID 90343)
 -- Name: customer_order fk_order_offer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1612,7 +1622,7 @@ ALTER TABLE ONLY public.customer_order
 
 
 --
--- TOC entry 3313 (class 2606 OID 90348)
+-- TOC entry 3314 (class 2606 OID 90348)
 -- Name: customer_order fk_order_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1621,7 +1631,7 @@ ALTER TABLE ONLY public.customer_order
 
 
 --
--- TOC entry 3307 (class 2606 OID 90262)
+-- TOC entry 3308 (class 2606 OID 90262)
 -- Name: carport_request fk_request_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1630,7 +1640,7 @@ ALTER TABLE ONLY public.carport_request
 
 
 --
--- TOC entry 3306 (class 2606 OID 90249)
+-- TOC entry 3307 (class 2606 OID 90249)
 -- Name: user_account fk_user_zip_code; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1638,11 +1648,11 @@ ALTER TABLE ONLY public.user_account
     ADD CONSTRAINT fk_user_zip_code FOREIGN KEY (zip_code) REFERENCES public.zip_code(zip_code);
 
 
--- Completed on 2026-05-19 09:07:16 CEST
+-- Completed on 2026-05-22 13:19:54 CEST
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Q72k2TAjnL2gELbhUzstWjglrAn0U2EnzJKqf3awPpYnZF5ZyupG2GDw2gzmbtn
+\unrestrict M9TfpQCbTScrm5rWGp8GSYGDmWwYT5kylWSFgFBXJdiansjiYwemHOwPM4iAlnV
 

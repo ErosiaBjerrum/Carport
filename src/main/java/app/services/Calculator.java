@@ -91,15 +91,31 @@ public class Calculator {
             return new int[] { findBestLength(length) };
         }
 
+        int bestFirst = 0;
+        int bestSecond = 0;
+        int leastWaste = Integer.MAX_VALUE;
+        int bestBalance = Integer.MAX_VALUE;
+
         for (int first : availableLengths) {
             for (int second : availableLengths) {
-                if (first + second >= length) {
-                    return new int[] { first, second };
+
+                int totalLength = first + second;
+
+                if (totalLength >= length) {
+                    int waste = totalLength - length;
+                    int balance = Math.abs(first - second);
+
+                    if (waste < leastWaste || waste == leastWaste && balance < bestBalance) {
+                        leastWaste = waste;
+                        bestBalance = balance;
+                        bestFirst = first;
+                        bestSecond = second;
+                    }
                 }
             }
         }
 
-        return new int[] {};
+        return new int[] { bestFirst, bestSecond };
     }
 
         // >>> FØJ MATERIALER TIL STYKLISTE <<<
@@ -118,16 +134,17 @@ public class Calculator {
     }
 
     public void addBeamsToBillOfMaterial(BillOfMaterial billOfMaterial) throws SQLException {
-        int beamCount = 2;
-        int beamLength = findBestLength(length);
+        int[] beamLengths = calcBeamLengths();
 
-        MaterialItem beam = MaterialMapper.getMaterialItem("Rem 45x195 mm", beamLength);
+        for (int beamLength : beamLengths) {
+            MaterialItem beam = MaterialMapper.getMaterialItem("Rem 45x195 mm", beamLength);
 
-        if (beam == null) {
-            throw new RuntimeException("Materiale ikke fundet: Rem 45x195 mm, " + beamLength + " cm");
+            if (beam == null) {
+                throw new RuntimeException("Materiale ikke fundet: Rem 45x195 mm, " + beamLength + " cm");
+            }
+
+            billOfMaterial.addLine(new BOMLine(beam, 2));
         }
-
-        billOfMaterial.addLine(new BOMLine(beam, beamCount));
     }
 
     public void addPostsToBillOfMaterial(BillOfMaterial billOfMaterial) throws SQLException {

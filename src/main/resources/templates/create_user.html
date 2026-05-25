@@ -11,9 +11,15 @@
           href="../public/css/styles.css"
           th:href="@{/css/styles.css}">
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@300;400;600&display=swap"
           rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- JavaScript -->
     <script src="../public/js/script.js"
@@ -23,38 +29,107 @@
 
 <body>
 
-<section class="form-box">
+<header class="site-header">
+    <img src="/images/fog_logo.png" alt="Fog Carporte" class="site-logo">
+</header>
 
-    <h1>Opret bruger</h1>
+<section class="form-box create-user-box">
 
-    <form method="post" action="/create-user" class="carport-form">
+    <div class="create-user-avatar">
+        <i class="fa-solid fa-user-plus"></i>
+    </div>
 
-        <h2>Loginoplysninger</h2>
-
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" th:value="${email}" required>
-
-        <label for="password">Adgangskode</label>
-        <input type="password" id="password" name="password" autocomplete="new-password" required>
+    <div class="create-user-header">
 
 
-        <h2>Kontaktoplysninger</h2>
+        <h1>Opret konto</h1>
 
-        <label for="name">Navn</label>
-        <input type="text" id="name" name="name" th:value="${name}" required>
+        <p>Få adgang til dine tilbud og ordrer.</p>
+    </div>
 
-        <label for="address">Adresse</label>
-        <input type="text" id="address" name="address" th:value="${address}" required>
+    <form method="post" action="/create-user" class="create-user-form">
 
-        <label for="zipCode">Postnummer</label>
-        <input type="text" id="zipCode" name="zipCode" th:value="${zipCode}" maxlength="4" required>
+        <div class="create-user-section">
+            <h2>Loginoplysninger</h2>
 
-        <label for="phone">Telefon</label>
-        <input type="text" id="phone" name="phone" th:value="${phone}" maxlength="8" required>
+            <div class="create-user-field">
+                <label for="email">E-mail</label>
+
+                <div class="login-input">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           placeholder="Vælg e-mail"
+                           th:value="${email}"
+                           required>
+                </div>
+            </div>
+
+            <div class="create-user-field">
+                <label for="password">Adgangskode</label>
+
+                <div class="login-input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="Vælg adgangskode"
+                           autocomplete="new-password"
+                           required>
+
+                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                        <i class="fa-regular fa-eye" id="passwordEye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="create-user-section">
+            <h2>Kontaktoplysninger</h2>
+
+            <div class="create-user-field">
+                <label for="name">Navn</label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       th:value="${name}"
+                       required>
+            </div>
+
+            <div class="create-user-field">
+                <label for="address">Adresse</label>
+                <input type="text"
+                       id="address"
+                       name="address"
+                       th:value="${address}"
+                       required>
+            </div>
+
+            <div class="create-user-field">
+                <label for="zipCode">Postnummer</label>
+                <input type="text"
+                       id="zipCode"
+                       name="zipCode"
+                       th:value="${zipCode}"
+                       maxlength="4"
+                       required>
+            </div>
+
+            <div class="create-user-field">
+                <label for="phone">Telefon</label>
+                <input type="text"
+                       id="phone"
+                       name="phone"
+                       th:value="${phone}"
+                       maxlength="8"
+                       required>
+            </div>
+        </div>
 
         <input type="hidden" name="role" value="customer">
 
-        <button type="submit">Opret bruger</button>
+        <button type="submit">Opret konto</button>
 
     </form>
 </section>

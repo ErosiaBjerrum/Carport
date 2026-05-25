@@ -1,4 +1,6 @@
 package app.entities;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Order {
 
@@ -7,13 +9,17 @@ public class Order {
     private int length;
     private int width;
     private int price;
+    private String customerName;
+    private Timestamp orderDate;
 
-    public Order(int orderId, int offerId, int length, int width, int price) {
+    public Order(int orderId, int offerId, int length, int width, int price, String customerName, Timestamp orderDate) {
         this.orderId = orderId;
         this.offerId = offerId;
         this.length = length;
         this.width = width;
         this.price = price;
+        this.customerName = customerName;
+        this.orderDate = orderDate;
     }
 
     public int getOrderId() {
@@ -35,4 +41,13 @@ public class Order {
     public int getPrice() {
         return price;
     }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public LocalDateTime getOrderDateFormatted() {
+        return orderDate.toLocalDateTime();
+    }
 }
+

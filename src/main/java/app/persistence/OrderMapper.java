@@ -37,7 +37,8 @@ public class OrderMapper {
                 o.offer_id,
                 cr.length,
                 cr.width,
-                o.total_price
+                o.total_price,
+                co.order_date
             FROM customer_order co
             JOIN offer o 
                 ON co.offer_id = o.offer_id
@@ -62,11 +63,78 @@ public class OrderMapper {
                         rs.getInt("offer_id"),
                         rs.getInt("length"),
                         rs.getInt("width"),
-                        rs.getInt("total_price")
+                        rs.getInt("total_price"),
+                        null,
+                        rs.getTimestamp("order_date")
                 ));
             }
 
             return orders;
+        }
+    }
+
+    public static List<Order> getAllOrders() throws SQLException {
+
+        String sql = """
+        SELECT 
+            co.order_id,
+            o.offer_id,
+            cr.length,
+            cr.width,
+            o.total_price,
+            ua.name,
+            co.order_date
+        FROM customer_order co
+        JOIN user_account ua
+            ON co.user_id = ua.user_id
+        JOIN offer o 
+            ON co.offer_id = o.offer_id
+        JOIN carport_request cr 
+            ON o.request_id = cr.request_id
+        ORDER BY co.order_id ASC
+        """;
+
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            List<Order> orders = new ArrayList<>();
+
+            while (rs.next()) {
+                orders.add(new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("offer_id"),
+                        rs.getInt("length"),
+                        rs.getInt("width"),
+                        rs.getInt("total_price"),
+                        rs.getString("name"),
+                        rs.getTimestamp("order_date")
+                ));
+            }
+
+            return orders;
+        }
+    }
+
+    public static boolean orderBelongsToUser(int offerId, int userId) throws SQLException {
+
+        String sql = """
+        SELECT 1
+        FROM customer_order
+        WHERE offer_id = ?
+        AND user_id = ?
+        """;
+
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, offerId);
+            ps.setInt(2, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
         }
     }
 

@@ -13,11 +13,7 @@ import java.sql.SQLException;
 
 public class UserController {
 
-    public static void showCreateUserPage(Context ctx) {
-        ctx.render("create_user.html");
-    }
-
-    public static void createUser(Context ctx) {
+     public static void createUser(Context ctx) {
 
         String name = ctx.formParam("name");
         String address = ctx.formParam("address");
@@ -25,7 +21,8 @@ public class UserController {
         String zipCode = ctx.formParam("zipCode");
         String phone = ctx.formParam("phone");
         String password = ctx.formParam("password");
-        String role = ctx.formParam("role");
+        // Sikrer, at rollen ikke kan ændres til admin
+        String role = "customer";
 
         ctx.attribute("name", name);
         ctx.attribute("address", address);
@@ -34,6 +31,13 @@ public class UserController {
         ctx.attribute("phone", phone);
 
         try {
+
+            if (address == null || !address.matches(".*[A-Za-zÆØÅæøå].*") || !address.matches(".*\\d.*")) {
+                ctx.attribute("errorField", "address");
+                ctx.attribute("errorMessage", "Adresse skal indeholde både vejnavn og husnummer.");
+                ctx.render("create_user.html");
+                return;
+            }
 
             if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") || UserMapper.emailExists(email)) {
                 ctx.attribute("errorField", "email");
